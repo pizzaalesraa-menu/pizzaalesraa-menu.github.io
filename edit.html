@@ -36,12 +36,12 @@ button.red{background:#C1121F}button.green{background:#0F7B4A}button.ghost{backg
 <body>
 <div class="wrap">
 <h1>تعديل منيو بيتزا الإسراء</h1>
-<p class="sub">الصفحة دي ليك أنت بس. بتشتغل بالمفتاح الخاص بيك.</p>
+<p class="sub">الصفحة دي ليك أنت بس. بتشتغل بالعبارة السرية بتاعتك.</p>
 
 <div id="login" class="card hidden">
-<label for="key">المفتاح الخاص</label>
-<input id="key" type="password" autocomplete="off" placeholder="الصق المفتاح هنا">
-<div class="hint">بتحطه مرة واحدة بس، وبيتحفظ على موبايلك.</div>
+<label for="key">العبارة السرية</label>
+<input id="key" type="password" autocomplete="off" placeholder="اكتب العبارة السرية">
+<div class="hint">بتكتبها مرة واحدة بس، وبتتحفظ على موبايلك.</div>
 <div style="margin-top:12px"><button class="green" id="enter">دخول</button></div>
 </div>
 
@@ -91,7 +91,7 @@ function b64enc(str){const u=new TextEncoder().encode(str);let bin='';for(let i=
 async function load(){
   msg('');
   const r=await fetch(API+'?ref='+BR+'&t='+Date.now(),{headers:hdr(),cache:'no-store'});
-  if(r.status===401||r.status===403){localStorage.removeItem('menuKey');showLogin();msg('المفتاح غلط أو مش شغال.','err');return}
+  if(r.status===401||r.status===403){localStorage.removeItem('menuKey');showLogin();msg('الدخول مش شغال. اكتب العبارة السرية تاني.','err');return}
   if(!r.ok){msg('حصلت مشكلة في تحميل المنيو ('+r.status+').','err');return}
   const j=await r.json();sha=j.sha;
   doc=new DOMParser().parseFromString(b64dec(j.content),'text/html');
@@ -231,8 +231,31 @@ $('save').addEventListener('click',async()=>{
 });
 
 function showLogin(){$('login').classList.remove('hidden');$('app').classList.add('hidden');$('bar').classList.add('hidden')}
-$('enter').addEventListener('click',()=>{const k=$('key').value.trim();if(!k)return;localStorage.setItem('menuKey',k);$('key').value='';load()});
-$('logout').addEventListener('click',()=>{if(confirm('تطلع؟ هتحتاج المفتاح تاني.')){localStorage.removeItem('menuKey');location.reload()}});
+const LOCK={"i":600000,"s":"1Mm34YZgZw/d9wRYWj/4hQ==","n":"njJMEAELu+Xefbd8Xxup/g==","c":"yevZ7eMmeGorcliJA5RvkQh8d8YnebdmQw66YNNTEiRVtEIPRm55+hUgi2Q3i2IjiM78w9vmXAq10QSCMKuAOD4FT/HSV0oVTe/1BAx/PEaaS+umeqcBAb3AvKkP","m":"9g/nNdl7d78/B0gdDBwgV0HqtIjcg83Xy1/Fsv38H94="};
+const b64b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function unlock(pass){
+  const s=crypto.subtle,E=new TextEncoder();
+  const base=await s.importKey('raw',E.encode(pass),'PBKDF2',false,['deriveBits']);
+  const bits=new Uint8Array(await s.deriveBits({name:'PBKDF2',salt:b64b(LOCK.s),iterations:LOCK.i,hash:'SHA-256'},base,512));
+  const ke=await s.importKey('raw',bits.slice(0,32),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  const km=await s.importKey('raw',bits.slice(32),{name:'HMAC',hash:'SHA-256'},false,['verify']);
+  const n=b64b(LOCK.n),c=b64b(LOCK.c),m=b64b(LOCK.m);
+  const buf=new Uint8Array(n.length+c.length);buf.set(n);buf.set(c,n.length);
+  if(!await s.verify('HMAC',km,m,buf))return null;
+  const out=new Uint8Array(c.length);
+  for(let i=0;i*32<c.length;i++){const b=new Uint8Array(n.length+4);b.set(n);new DataView(b.buffer).setUint32(n.length,i);const ks=new Uint8Array(await s.sign('HMAC',ke,b));for(let j=0;j<32&&i*32+j<c.length;j++)out[i*32+j]=c[i*32+j]^ks[j]}
+  return new TextDecoder().decode(out);
+}
+$('enter').addEventListener('click',async()=>{
+  const p=$('key').value.trim();if(!p)return;
+  const btn=$('enter');btn.disabled=true;msg('');
+  try{const k=await unlock(p);
+    if(!k){msg('العبارة السرية غلط.','err');return}
+    localStorage.setItem('menuKey',k);$('key').value='';load();
+  }catch(e){msg('حصلت مشكلة. جرب تاني.','err')}
+  finally{btn.disabled=false}
+});
+$('logout').addEventListener('click',()=>{if(confirm('تطلع؟ هتحتاج العبارة السرية تاني.')){localStorage.removeItem('menuKey');location.reload()}});
 if(localStorage.getItem('menuKey'))load();else showLogin();
 </script>
 </body>
