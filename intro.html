@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#db2426">
+<meta name="theme-color" content="#000000">
 <title>بيتزا الإسراء</title>
 <style>
+  @property --a { syntax:'<angle>'; initial-value:0deg; inherits:false; }
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body { height:100%; }
   body {
-    background:#db2426;
-    background:radial-gradient(circle at 50% 38%, #e53234 0%, #db2426 55%, #b91d1f 100%);
+    background:#050505;
+    background:radial-gradient(circle at 50% 42%, #171010 0%, #050505 62%);
     font-family:'Segoe UI', Tahoma, Arial, sans-serif;
     color:#fff;
     display:flex;
@@ -22,101 +23,97 @@
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
   }
-  .intro-logo {
-    width:min(86vw, 340px);
-    height:auto;
-    opacity:0;
-    transform:scale(.55);
-    animation:logo-pop 1s cubic-bezier(.2,1.4,.4,1) .15s forwards, logo-float 3.2s ease-in-out 1.3s infinite;
-    filter:drop-shadow(0 18px 34px rgba(0,0,0,.35));
-  }
-  @keyframes logo-pop {
-    to { opacity:1; transform:scale(1); }
-  }
-  @keyframes logo-float {
-    0%,100% { transform:scale(1) translateY(0); }
-    50%     { transform:scale(1.02) translateY(-8px); }
-  }
+  .intro-stage { position:relative; }
   .intro-glow {
     position:absolute;
-    width:min(92vw, 400px);
-    aspect-ratio:1;
+    inset:-60px;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 65%);
+    background:radial-gradient(circle, rgba(219,36,38,.55) 0%, rgba(219,36,38,0) 65%);
+    filter:blur(8px);
     opacity:0;
-    animation:glow-in 1.2s ease .5s forwards, glow-pulse 2.6s ease-in-out 1.7s infinite;
+    animation:glow-in 1.2s ease 1.2s forwards, glow-pulse 2.8s ease-in-out 2.4s infinite;
     pointer-events:none;
   }
   @keyframes glow-in { to { opacity:1; } }
-  @keyframes glow-pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
+  @keyframes glow-pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.07);opacity:.75;} }
+  .intro-frame {
+    position:relative;
+    padding:3px;
+    border-radius:26px;
+  }
+  .intro-frame::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    padding:2.5px;
+    background:conic-gradient(from var(--a),
+      transparent 0deg 200deg,
+      #ff7a1a 245deg,
+      #ff2e2e 295deg,
+      #ffffff 330deg,
+      transparent 360deg);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+            mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite:exclude;
+    filter:drop-shadow(0 0 8px rgba(255,70,40,.9));
+    animation:trace 1.7s linear 2, trace-slow 4.5s linear 3.4s infinite;
+  }
+  @keyframes trace { from { --a:0deg; } to { --a:360deg; } }
+  @keyframes trace-slow { from { --a:0deg; } to { --a:360deg; } }
+  .intro-card {
+    position:relative;
+    display:block;
+    height:min(68dvh, 600px);
+    width:auto;
+    max-width:86vw;
+    object-fit:cover;
+    border-radius:22px;
+    opacity:0;
+    transform:scale(.82);
+    animation:card-in .9s cubic-bezier(.2,1.25,.4,1) 1.05s forwards;
+  }
+  @keyframes card-in { to { opacity:1; transform:scale(1); } }
   .intro-phrase {
     margin-top:26px;
-    font-size:clamp(19px, 5.4vw, 26px);
-    font-weight:800;
-    text-shadow:0 2px 10px rgba(0,0,0,.25);
+    font-size:clamp(15px, 4.2vw, 19px);
+    font-weight:700;
+    letter-spacing:.5px;
+    color:#f5f0ea;
+    text-shadow:0 0 14px rgba(255,70,40,.45);
     opacity:0;
-    transform:translateY(18px);
-    animation:rise .7s ease-out 1.05s forwards;
+    transform:translateY(14px);
+    animation:rise .7s ease-out 2s forwards;
     text-align:center;
     padding:0 20px;
   }
-  .intro-btn {
-    margin-top:34px;
-    background:#fff;
-    color:#b91d1f;
-    font-size:18px;
-    font-weight:900;
-    font-family:inherit;
-    border:none;
-    border-radius:999px;
-    padding:14px 44px;
-    min-height:48px;
-    cursor:pointer;
-    box-shadow:0 10px 24px rgba(0,0,0,.28);
-    opacity:0;
-    transform:translateY(18px);
-    animation:rise .7s ease-out 1.7s forwards, btn-pulse 1.8s ease-in-out 2.6s infinite;
-  }
-  .intro-btn:active { transform:scale(.96); }
   @keyframes rise { to { opacity:1; transform:translateY(0); } }
-  @keyframes btn-pulse {
-    0%,100% { box-shadow:0 10px 24px rgba(0,0,0,.28); }
-    50%     { box-shadow:0 10px 32px rgba(0,0,0,.4), 0 0 0 10px rgba(255,255,255,.12); }
-  }
-  .intro-progress {
-    position:fixed;
-    bottom:0;
-    right:0;
-    height:4px;
-    width:0;
-    background:rgba(255,255,255,.85);
-    animation:fill 4.6s linear 1.4s forwards;
-  }
-  @keyframes fill { to { width:100%; } }
-  body.leaving { animation:fade-out .45s ease forwards; }
+  body.leaving { animation:fade-out .5s ease forwards; }
   @keyframes fade-out { to { opacity:0; } }
   @media (prefers-reduced-motion: reduce) {
-    .intro-logo, .intro-glow, .intro-phrase, .intro-btn { animation-duration:.01s !important; animation-delay:0s !important; }
-    .intro-progress { animation-duration:2s !important; animation-delay:.3s !important; }
+    .intro-frame::before, .intro-card, .intro-glow, .intro-phrase { animation-duration:.01s !important; animation-delay:0s !important; animation-iteration-count:1 !important; }
   }
 </style>
 </head>
 <body>
-  <div class="intro-glow"></div>
-  <img class="intro-logo" src="logo.jpg" alt="بيتزا الإسراء - ألذ عجينة في مصر">
+  <div class="intro-stage">
+    <div class="intro-glow"></div>
+    <div class="intro-frame">
+      <img class="intro-card" src="brand-card.jpg" alt="بيتزا الإسراء - ألذ عجينة في مصر - 15410">
+    </div>
+  </div>
   <p class="intro-phrase">ألذ لحظة في يومك تبدأ من هنا</p>
-  <button class="intro-btn" type="button">افتح المنيو</button>
-  <div class="intro-progress"></div>
 <script>
   var went = false;
   function go(){
     if (went) return;
     went = true;
     document.body.classList.add('leaving');
-    setTimeout(function(){ location.replace('index.html'); }, 420);
+    setTimeout(function(){ location.replace('index.html'); }, 450);
   }
   document.body.addEventListener('click', go);
-  setTimeout(go, 6000);
+  setTimeout(go, 5800);
 </script>
 </body>
 </html>
