@@ -112,7 +112,7 @@
   var went = false;
   function go(){
     if (went) return;
-    went = true;
+    went = true; try{sessionStorage.setItem('pmIntroSeen','1')}catch(e){}
     document.getElementById('app').classList.add('leaving');
     setTimeout(function(){ location.replace('index.html'); }, 450);
   }
