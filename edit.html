@@ -49,6 +49,13 @@ button.red{background:#C1121F}button.green{background:#0F7B4A}button.ghost{backg
 
 <div id="app" class="hidden">
 <div class="card">
+<b>إضافة قسم جديد</b>
+<label for="sname">اسم القسم</label><input id="sname" type="text">
+<label for="sen">الاسم بالإنجليزي (اختياري)</label><input id="sen" type="text" dir="ltr">
+<div class="hint">القسم الفاضي مش بيظهر للعملاء لحد ما تضيف فيه صنف.</div>
+<div style="margin-top:12px"><button class="red" id="addsec">إضافة القسم</button></div>
+</div>
+<div class="card">
 <b>إضافة صنف جديد</b>
 <label for="nsec">القسم</label><select id="nsec"></select>
 <label for="nname">اسم الصنف</label><input id="nname" type="text">
@@ -74,7 +81,7 @@ button.red{background:#C1121F}button.green{background:#0F7B4A}button.ghost{backg
 const OWNER='pizzaalesraa-menu',REPO='pizzaalesraa-menu.github.io',PATH='index.html',BR='main';
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
 const $=id=>document.getElementById(id);
-let doc=null,sha=null,items=[];
+let doc=null,sha=null,items=[],secDirty=false;
 
 function msg(t,c){const m=$('msg');m.innerHTML='';if(!t)return;const d=document.createElement('div');d.className='msg '+(c||'ok');d.textContent=t;m.appendChild(d);window.scrollTo({top:0,behavior:'smooth'})}
 function hdr(){return{'Authorization':'Bearer '+localStorage.getItem('menuKey'),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
@@ -88,7 +95,7 @@ async function load(){
   if(!r.ok){msg('حصلت مشكلة في تحميل المنيو ('+r.status+').','err');return}
   const j=await r.json();sha=j.sha;
   doc=new DOMParser().parseFromString(b64dec(j.content),'text/html');
-  items=[];
+  items=[];secDirty=false;
   doc.querySelectorAll('section.pm-sec').forEach(sec=>{
     const sid=sec.id;
     sec.querySelectorAll('.pm-it').forEach(el=>{
@@ -151,6 +158,19 @@ function rowFor(it){
   t.appendChild(del);row.appendChild(t);mark(it,row);return row;
 }
 
+$('addsec').addEventListener('click',()=>{
+  const n=$('sname').value.trim();
+  if(!n){msg('اكتب اسم القسم الأول.','err');return}
+  const en=$('sen').value.trim();
+  const id='sec'+Date.now().toString(36);
+  const sec=doc.createElement('section');sec.id=id;sec.className='pm-sec';
+  const h=doc.createElement('h2');h.className='pm-h2';h.appendChild(doc.createTextNode(n+' '));
+  if(en){const sm=doc.createElement('small');const bd=doc.createElement('bdi');bd.textContent=en.toUpperCase();sm.appendChild(bd);h.appendChild(sm)}
+  sec.appendChild(h);doc.querySelector('main.pm-main').appendChild(sec);
+  const a=doc.createElement('a');a.href='#'+id;a.textContent=n;doc.querySelector('nav.pm-tabs').appendChild(a);
+  secDirty=true;$('sname').value='';$('sen').value='';render();$('nsec').value=id;
+  msg('اتضاف قسم "'+n+'". ضيف فيه صنف من "إضافة صنف جديد" وبعدين دوس "حفظ التعديلات".');
+});
 $('add').addEventListener('click',()=>{
   const name=$('nname').value.trim();
   if(!name){msg('اكتب اسم الصنف الأول.','err');return}
@@ -195,7 +215,7 @@ function build(){
 $('save').addEventListener('click',async()=>{
   const btn=$('save');
   const changed=items.filter(i=>i.removed||i.added||JSON.stringify([i.name,i.desc,i.m,i.l,i.s,i.isNew])!==i.orig).length;
-  if(!changed){msg('مفيش تعديلات للحفظ.','err');return}
+  if(!changed&&!secDirty){msg('مفيش تعديلات للحفظ.','err');return}
   const out=build();
   if(out.error){msg(out.error,'err');return}
   btn.disabled=true;btn.textContent='بيتحفظ...';
