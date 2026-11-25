@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>تعديل المنيو</title>
@@ -40,7 +40,7 @@ button.red{background:#C1121F}button.green{background:#0F7B4A}button.ghost{backg
 
 <div id="login" class="card hidden">
 <label for="key">العبارة السرية</label>
-<input id="key" type="password" autocomplete="off" placeholder="اكتب العبارة السرية">
+<input id="key" type="password" dir="ltr" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="اكتب العبارة السرية">
 <div class="hint">بتكتبها مرة واحدة بس، وبتتحفظ على موبايلك.</div>
 <div style="margin-top:12px"><button class="green" id="enter">دخول</button></div>
 </div>
@@ -231,9 +231,11 @@ $('save').addEventListener('click',async()=>{
 });
 
 function showLogin(){$('login').classList.remove('hidden');$('app').classList.add('hidden');$('bar').classList.add('hidden')}
-const LOCK={"i":600000,"s":"1Mm34YZgZw/d9wRYWj/4hQ==","n":"njJMEAELu+Xefbd8Xxup/g==","c":"yevZ7eMmeGorcliJA5RvkQh8d8YnebdmQw66YNNTEiRVtEIPRm55+hUgi2Q3i2IjiM78w9vmXAq10QSCMKuAOD4FT/HSV0oVTe/1BAx/PEaaS+umeqcBAb3AvKkP","m":"9g/nNdl7d78/B0gdDBwgV0HqtIjcg83Xy1/Fsv38H94="};
+const LOCK={"i":600000,"s":"1jm9KYYs2duEWvsV+uHT4A==","n":"bdlgoaViKwi8AW4683V2rQ==","c":"IfGEj+mPnQXnDcZJKAmxUWof14peeQSHLE1y4T5lxxH8MfQTXlXOAcuVV2kD7fNWO0sEtbMI3qcv3tFF0V5HSy6NgZeMaLRMUs+Rayrv6D2EONMkh7w78yRxlZ4d","m":"ebcFBLUNMi1hrWNrODk7kOPJ5exJcq3W76uvXCW/YEE="};
 const b64b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const normPass=p=>p.normalize('NFKC').replace(/[\u0660-\u0669]/g,d=>String(d.charCodeAt(0)-0x660)).replace(/[\u06F0-\u06F9]/g,d=>String(d.charCodeAt(0)-0x6F0)).replace(/\s+/g,'').toLowerCase();
 async function unlock(pass){
+  pass=normPass(pass);
   const s=crypto.subtle,E=new TextEncoder();
   const base=await s.importKey('raw',E.encode(pass),'PBKDF2',false,['deriveBits']);
   const bits=new Uint8Array(await s.deriveBits({name:'PBKDF2',salt:b64b(LOCK.s),iterations:LOCK.i,hash:'SHA-256'},base,512));
@@ -250,11 +252,12 @@ $('enter').addEventListener('click',async()=>{
   const p=$('key').value.trim();if(!p)return;
   const btn=$('enter');btn.disabled=true;msg('');
   try{const k=await unlock(p);
-    if(!k){msg('العبارة السرية غلط.','err');return}
+    if(!k){msg('العبارة السرية مش مظبوطة. اكتبها تاني بنفس الترتيب (مش مهم الحروف الكبيرة ولا المسافات). لو لسه مش راضية، اقفل الصفحة وافتحها من جديد.','err');return}
     localStorage.setItem('menuKey',k);$('key').value='';load();
   }catch(e){msg('حصلت مشكلة. جرب تاني.','err')}
   finally{btn.disabled=false}
 });
+$('key').addEventListener('keydown',e=>{if(e.key==='Enter')$('enter').click()});
 $('logout').addEventListener('click',()=>{if(confirm('تطلع؟ هتحتاج العبارة السرية تاني.')){localStorage.removeItem('menuKey');location.reload()}});
 if(localStorage.getItem('menuKey'))load();else showLogin();
 </script>
