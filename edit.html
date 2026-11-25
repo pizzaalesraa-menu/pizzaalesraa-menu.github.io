@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>تعديل المنيو</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FFF6E8;color:#1B1B1B;font-family:'Segoe UI',Tahoma,Arial,sans-serif;padding-bottom:90px}
+.wrap{max-width:760px;margin:0 auto;padding:14px}
+h1{margin:0 0 4px;font-size:22px}
+.sub{color:#555;font-size:14px;margin:0 0 14px}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 0 rgba(27,27,27,.06),0 8px 18px rgba(27,27,27,.05)}
+label{display:block;font-size:13px;font-weight:700;color:#555;margin:8px 0 4px}
+input[type=text],input[type=password],input[type=number],select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid #d9cdb8;border-radius:12px;background:#fff;color:#1B1B1B}
+.row{display:flex;gap:8px}.row>div{flex:1;min-width:0}
+button{font:inherit;font-weight:800;font-size:16px;border:0;border-radius:999px;padding:12px 18px;color:#fff;background:#1B1B1B;min-height:44px}
+button.red{background:#C1121F}button.green{background:#0F7B4A}button.ghost{background:#eee;color:#1B1B1B}
+.sec h2{margin:18px 0 8px;background:#1B1B1B;color:#fff;font-size:19px;padding:9px 16px;border-radius:12px 12px 32px 12px}
+.it{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;border-inline-start:6px solid #fff}
+.it.changed{border-inline-start-color:#0F7B4A}
+.it.removed{opacity:.45}
+.it.removed .nm{text-decoration:line-through}
+.tools{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:14px}
+.tools label{display:inline-flex;align-items:center;gap:6px;margin:0}
+.del{margin-inline-start:auto;background:#fff;color:#C1121F;border:1px solid #C1121F;padding:6px 14px;font-size:14px;min-height:36px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -4px 16px rgba(0,0,0,.15);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;z-index:9}
+.bar button{flex:1}
+.msg{padding:10px 14px;border-radius:12px;margin:10px 0;font-size:15px}
+.ok{background:#dff5e8;color:#0a5a35}.err{background:#fde2e2;color:#8f0d17}
+.hint{font-size:12px;color:#777;margin-top:4px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>تعديل منيو بيتزا الإسراء</h1>
+<p class="sub">الصفحة دي ليك أنت بس. بتشتغل بالمفتاح الخاص بيك.</p>
+
+<div id="login" class="card hidden">
+<label for="key">المفتاح الخاص</label>
+<input id="key" type="password" autocomplete="off" placeholder="الصق المفتاح هنا">
+<div class="hint">بتحطه مرة واحدة بس، وبيتحفظ على موبايلك.</div>
+<div style="margin-top:12px"><button class="green" id="enter">دخول</button></div>
+</div>
+
+<div id="msg"></div>
+
+<div id="app" class="hidden">
+<div class="card">
+<b>إضافة صنف جديد</b>
+<label for="nsec">القسم</label><select id="nsec"></select>
+<label for="nname">اسم الصنف</label><input id="nname" type="text">
+<label for="ndesc">الوصف (اختياري)</label><input id="ndesc" type="text">
+<div class="row">
+<div><label for="nm">سعر وسط (M)</label><input id="nm" type="number" inputmode="decimal"></div>
+<div><label for="nl">سعر كبير (L)</label><input id="nl" type="number" inputmode="decimal"></div>
+<div><label for="ns">سعر واحد</label><input id="ns" type="number" inputmode="decimal"></div>
+</div>
+<div class="hint">املا وسط وكبير للبيتزا، أو سعر واحد لباقي الأصناف.</div>
+<div style="margin-top:12px"><button class="red" id="add">إضافة الصنف</button></div>
+</div>
+<div id="list"></div>
+</div>
+</div>
+
+<div class="bar hidden" id="bar">
+<button class="green" id="save">حفظ التعديلات</button>
+<button class="ghost" id="logout" style="flex:0 0 auto">خروج</button>
+</div>
+
+<script>
+const OWNER='pizzaalesraa-menu',REPO='pizzaalesraa-menu.github.io',PATH='index.html',BR='main';
+const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
+const $=id=>document.getElementById(id);
+let doc=null,sha=null,items=[];
+
+function msg(t,c){const m=$('msg');m.innerHTML='';if(!t)return;const d=document.createElement('div');d.className='msg '+(c||'ok');d.textContent=t;m.appendChild(d);window.scrollTo({top:0,behavior:'smooth'})}
+function hdr(){return{'Authorization':'Bearer '+localStorage.getItem('menuKey'),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
+function b64dec(s){const bin=atob(s.replace(/\n/g,''));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+function b64enc(str){const u=new TextEncoder().encode(str);let bin='';for(let i=0;i<u.length;i+=8192)bin+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(bin)}
+
+async function load(){
+  msg('');
+  const r=await fetch(API+'?ref='+BR+'&t='+Date.now(),{headers:hdr(),cache:'no-store'});
+  if(r.status===401||r.status===403){localStorage.removeItem('menuKey');showLogin();msg('المفتاح غلط أو مش شغال.','err');return}
+  if(!r.ok){msg('حصلت مشكلة في تحميل المنيو ('+r.status+').','err');return}
+  const j=await r.json();sha=j.sha;
+  doc=new DOMParser().parseFromString(b64dec(j.content),'text/html');
+  items=[];
+  doc.querySelectorAll('section.pm-sec').forEach(sec=>{
+    const sid=sec.id;
+    sec.querySelectorAll('.pm-it').forEach(el=>{
+      const name=el.querySelector('b');
+      const isNew=!!el.querySelector('.pm-new');
+      const nm=(name.firstChild&&name.firstChild.nodeType===3?name.firstChild.textContent:name.textContent.replace('NEW','')).trim();
+      const d=el.querySelector('.pm-it-text span');
+      const m=el.querySelector('.pm-prices .pm-m'),l=el.querySelector('.pm-prices .pm-l');
+      const all=el.querySelectorAll('.pm-prices i');
+      const single=(!m&&!l&&all[0])?all[0].textContent.trim():'';
+      const lOnly=(!m&&l);
+      items.push({sid,el,name:nm,desc:d?d.textContent.trim():'',m:m?m.textContent.trim():'',l:l?l.textContent.trim():'',s:single,isNew,removed:false,added:false,orig:null});
+    });
+  });
+  items.forEach(i=>i.orig=JSON.stringify([i.name,i.desc,i.m,i.l,i.s,i.isNew]));
+  render();
+  $('login').classList.add('hidden');$('app').classList.remove('hidden');$('bar').classList.remove('hidden');
+}
+
+function secTitle(sec){const h=sec.querySelector('h2');return h.firstChild.textContent.trim()}
+
+function render(){
+  const ns=$('nsec');const keep=ns.value;ns.innerHTML='';
+  const list=$('list');list.innerHTML='';
+  doc.querySelectorAll('section.pm-sec').forEach(sec=>{
+    const o=document.createElement('option');o.value=sec.id;o.textContent=secTitle(sec);ns.appendChild(o);
+    const box=document.createElement('div');box.className='sec';
+    const h=document.createElement('h2');h.textContent=secTitle(sec);box.appendChild(h);
+    items.filter(i=>i.sid===sec.id).forEach(it=>box.appendChild(rowFor(it)));
+    list.appendChild(box);
+  });
+  if(keep)ns.value=keep;
+}
+
+function field(lbl,val,cb,type){
+  const w=document.createElement('div');const l=document.createElement('label');l.textContent=lbl;
+  const i=document.createElement('input');i.type=type||'text';if(type==='number')i.inputMode='decimal';i.value=val;
+  i.addEventListener('input',()=>cb(i.value));w.appendChild(l);w.appendChild(i);return w;
+}
+
+function mark(it,row){
+  const cur=JSON.stringify([it.name,it.desc,it.m,it.l,it.s,it.isNew]);
+  row.classList.toggle('changed',it.added||cur!==it.orig);
+}
+
+function rowFor(it){
+  const row=document.createElement('div');row.className='it'+(it.removed?' removed':'');
+  const a=field('الاسم',it.name,v=>{it.name=v;mark(it,row)});a.querySelector('input').classList.add('nm');row.appendChild(a);
+  row.appendChild(field('الوصف',it.desc,v=>{it.desc=v;mark(it,row)}));
+  const pr=document.createElement('div');pr.className='row';
+  pr.appendChild(field('وسط (M)',it.m,v=>{it.m=v;mark(it,row)},'number'));
+  pr.appendChild(field('كبير (L)',it.l,v=>{it.l=v;mark(it,row)},'number'));
+  pr.appendChild(field('سعر واحد',it.s,v=>{it.s=v;mark(it,row)},'number'));
+  row.appendChild(pr);
+  const t=document.createElement('div');t.className='tools';
+  const lb=document.createElement('label');const cb=document.createElement('input');cb.type='checkbox';cb.checked=it.isNew;
+  cb.addEventListener('change',()=>{it.isNew=cb.checked;mark(it,row)});lb.appendChild(cb);lb.appendChild(document.createTextNode(' علامة جديد'));t.appendChild(lb);
+  const del=document.createElement('button');del.className='del';del.textContent=it.removed?'تراجع':'حذف';
+  del.addEventListener('click',()=>{it.removed=!it.removed;if(it.added&&it.removed){items.splice(items.indexOf(it),1)}render()});
+  t.appendChild(del);row.appendChild(t);mark(it,row);return row;
+}
+
+$('add').addEventListener('click',()=>{
+  const name=$('nname').value.trim();
+  if(!name){msg('اكتب اسم الصنف الأول.','err');return}
+  const m=$('nm').value.trim(),l=$('nl').value.trim(),s=$('ns').value.trim();
+  items.push({sid:$('nsec').value,el:null,name,desc:$('ndesc').value.trim(),m,l,s,isNew:true,removed:false,added:true,orig:''});
+  ['nname','ndesc','nm','nl','ns'].forEach(i=>$(i).value='');
+  render();msg('اتضاف "'+name+'" في آخر القسم. دوس "حفظ التعديلات" عشان يظهر في المنيو.');
+});
+
+function priceVal(v){v=String(v).trim();if(v==='')return '';const n=Number(v);if(!isFinite(n)||n<0)return null;return String(n)}
+
+function build(){
+  const bad=[];
+  items.forEach(it=>{
+    const it2=['m','l','s'].forEach(k=>{if(priceVal(it[k])===null)bad.push(it.name)});
+  });
+  if(bad.length)return {error:'في سعر مش مظبوط في: '+bad.join('، ')};
+  if(items.some(i=>!i.removed&&!i.name.trim()))return {error:'في صنف من غير اسم.'};
+  items.forEach(it=>{
+    if(it.removed){if(it.el)it.el.remove();return}
+    let el=it.el;
+    if(!el){
+      el=doc.createElement('div');el.className='pm-it';
+      el.appendChild(doc.createElement('div')).className='pm-it-text';
+      el.appendChild(doc.createElement('p')).className='pm-prices';
+      doc.getElementById(it.sid).appendChild(el);it.el=el;
+    }
+    const txt=el.querySelector('.pm-it-text');txt.innerHTML='';
+    const b=doc.createElement('b');b.appendChild(doc.createTextNode(it.name.trim()));
+    if(it.isNew){const e=doc.createElement('em');e.className='pm-new';e.textContent='NEW';b.appendChild(e)}
+    txt.appendChild(b);
+    if(it.desc.trim()){const sp=doc.createElement('span');sp.textContent=it.desc.trim();txt.appendChild(sp)}
+    const p=el.querySelector('.pm-prices');p.innerHTML='';
+    const m=priceVal(it.m),l=priceVal(it.l),s=priceVal(it.s);
+    if(m){const i=doc.createElement('i');i.className='pm-m';i.textContent=m;p.appendChild(i)}
+    if(l){const i=doc.createElement('i');i.className='pm-l';i.textContent=l;p.appendChild(i)}
+    if(s&&!m&&!l){const i=doc.createElement('i');i.textContent=s;p.appendChild(i)}
+  });
+  return {html:'<!doctype html>\n'+doc.documentElement.outerHTML+'\n'};
+}
+
+$('save').addEventListener('click',async()=>{
+  const btn=$('save');
+  const changed=items.filter(i=>i.removed||i.added||JSON.stringify([i.name,i.desc,i.m,i.l,i.s,i.isNew])!==i.orig).length;
+  if(!changed){msg('مفيش تعديلات للحفظ.','err');return}
+  const out=build();
+  if(out.error){msg(out.error,'err');return}
+  btn.disabled=true;btn.textContent='بيتحفظ...';
+  try{
+    const r=await fetch(API,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr()),
+      body:JSON.stringify({message:'Menu update from editor',content:b64enc(out.html),sha,branch:BR})});
+    if(r.status===409||r.status===422){msg('المنيو اتغير من مكان تاني. هحمله من جديد، عدل تاني وادوس حفظ.','err');await load();return}
+    if(!r.ok){msg('الحفظ فشل ('+r.status+'). جرب تاني.','err');await load();return}
+    msg('اتحفظ. التعديل بيظهر على اللينك بعد حوالي دقيقة.');
+    await load();msg('اتحفظ. التعديل بيظهر على اللينك بعد حوالي دقيقة.');
+  }catch(e){msg('مفيش نت أو حصل خطأ. جرب تاني.','err')}
+  finally{btn.disabled=false;btn.textContent='حفظ التعديلات'}
+});
+
+function showLogin(){$('login').classList.remove('hidden');$('app').classList.add('hidden');$('bar').classList.add('hidden')}
+$('enter').addEventListener('click',()=>{const k=$('key').value.trim();if(!k)return;localStorage.setItem('menuKey',k);$('key').value='';load()});
+$('logout').addEventListener('click',()=>{if(confirm('تطلع؟ هتحتاج المفتاح تاني.')){localStorage.removeItem('menuKey');location.reload()}});
+if(localStorage.getItem('menuKey'))load();else showLogin();
+</script>
+</body>
+</html>
