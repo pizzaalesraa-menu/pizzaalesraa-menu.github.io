@@ -44,6 +44,15 @@ textarea{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px sol
 input.changed,textarea.changed{border-color:#0F7B4A;background:#f1fbf5}
 details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28px}
 .hidden{display:none}
+.sl{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid #eee;border-radius:14px;padding:8px;margin-bottom:8px}
+.sl.changed{border-color:#0F7B4A}
+.sl.removed{opacity:.45}
+.sl img.th{width:84px;height:56px;object-fit:cover;border-radius:10px;flex:0 0 auto;background:#eee}
+.sl .nm2{font-weight:700;font-size:14px;flex:1;min-width:0;word-break:break-word}
+.sl .btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sl .btns button{min-height:38px;padding:6px 12px;font-size:14px;border-radius:10px}
+.sl .updn{display:flex;flex-direction:column;gap:4px}
+.sl .updn .ar{min-width:36px;min-height:30px;font-size:14px}
 </style>
 </head>
 <body>
@@ -62,6 +71,14 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 
 <div id="app" class="hidden">
 <div id="list"></div>
+<details class="card" id="sliderCard" open>
+<summary>صور السلايدر (الصور المتحركة فوق المنيو)</summary>
+<div class="hint">دي الصور اللي بتلف فوق المنيو. دوس "تغيير" عشان تحط صورة من معرض موبايلك مكان أي صورة، أو "إضافة صور" عشان تضيف جديدة. تقدر تمسح أو ترتب بالأسهم. بعد ما تخلص دوس "حفظ التعديلات" تحت.</div>
+<div id="slides" style="margin-top:10px"></div>
+<div style="margin-top:6px"><button class="red" id="addslide" type="button">إضافة صور من الموبايل</button></div>
+<input type="file" id="slideFile" accept="image/*" class="hidden">
+</details>
+
 <details class="card"><summary>كلام عام في الصفحة (الملاحظات والزراير)</summary><div class="hint">أي كلمة في الصفحة غير الأقسام والأصناف بتتعدل من هنا.</div><div id="globals"></div></details>
 <details class="card">
 <summary>إضافة قسم جديد</summary>
@@ -143,7 +160,7 @@ async function load(){
     });
   });
   items.forEach(i=>i.orig=sig(i));
-  setupGlobals();
+  setupGlobals();parseSlides();
   render();
   $('login').classList.add('hidden');$('app').classList.remove('hidden');$('bar').classList.remove('hidden');
 }
@@ -151,7 +168,7 @@ const sig=i=>JSON.stringify([i.name,i.desc,i.m,i.l,i.s,i.isNew,i.sid]);
 const itemChanged=i=>i.removed||i.added||sig(i)!==i.orig;
 const secChanged=id=>meta[id]&&(meta[id].t!==meta[id].ot||meta[id].e!==meta[id].oe);
 const globalChanged=g=>g.val!==g.orig;
-function dirtyCount(){return items.filter(itemChanged).length+Object.keys(meta).filter(secChanged).length+globals.filter(globalChanged).length+(orderDirty?1:0)+(secDirty?1:0)}
+function dirtyCount(){return items.filter(itemChanged).length+Object.keys(meta).filter(secChanged).length+globals.filter(globalChanged).length+(orderDirty?1:0)+(secDirty?1:0)+sliderDirtyCount()}
 function refreshBar(){const n=dirtyCount();$('save').textContent=n?'حفظ التعديلات ('+n+')':'حفظ التعديلات'}
 window.addEventListener('beforeunload',e=>{if(doc&&dirtyCount()){e.preventDefault();e.returnValue=''}});
 
@@ -250,6 +267,142 @@ function rowFor(it){
   t.appendChild(del);row.appendChild(t);mark(it,row);return row;
 }
 
+// ===== Slider photos management =====
+let slides=[],slideOrderDirty=false,fileTarget=-1;
+const MAXSLIDES=8;
+function parseSlides(){
+  slides=Array.from(doc.querySelectorAll('.pm-slides .pm-slide')).map(el=>{
+    const img=el.querySelector('img');
+    return {el,src:img?img.getAttribute('src'):'',alt:img?(img.getAttribute('alt')||''):'',file:null,preview:null,added:false,removed:false};
+  });
+  slideOrderDirty=false;fileTarget=-1;renderSlides();
+}
+function sliderDirtyCount(){return slides.filter(s=>s.removed||s.added||s.file).length+(slideOrderDirty?1:0)}
+function renderSlides(){
+  const box=$('slides');if(!box)return;box.innerHTML='';
+  const act=slides.filter(s=>!s.removed);
+  slides.forEach((s,i)=>{
+    const row=document.createElement('div');row.className='sl'+(s.removed?' removed':'')+((s.file||s.added)?' changed':'');
+    const th=document.createElement('img');th.className='th';th.alt='';
+    th.src=s.preview||(s.src+(s.src&&s.src.indexOf('?')<0?'?v=2':''));
+    row.appendChild(th);
+    const mid=document.createElement('div');mid.className='nm2';
+    const k=act.indexOf(s);
+    mid.textContent=s.removed?('هتتمسح'):('صورة '+(k+1));
+    if(s.added&&!s.removed)mid.textContent+=' (جديدة)';
+    else if(s.file&&!s.removed)mid.textContent+=' (هتتغير)';
+    row.appendChild(mid);
+    const bt=document.createElement('div');bt.className='btns';
+    const ud=document.createElement('div');ud.className='updn';
+    ud.appendChild(arrow('▲','تحريك الصورة لفوق',s.removed||k<=0,()=>moveSlide(s,-1)));
+    ud.appendChild(arrow('▼','تحريك الصورة لتحت',s.removed||k<0||k>=act.length-1,()=>moveSlide(s,1)));
+    bt.appendChild(ud);
+    if(!s.removed){
+      const rep=document.createElement('button');rep.className='ghost';rep.type='button';rep.textContent='تغيير';
+      rep.addEventListener('click',()=>{fileTarget=i;const inp=$('slideFile');inp.multiple=false;inp.click()});
+      bt.appendChild(rep);
+    }
+    const del=document.createElement('button');del.className='del';del.type='button';del.textContent=s.removed?'تراجع':'حذف';
+    del.addEventListener('click',()=>{
+      s.removed=!s.removed;
+      if(s.added&&s.removed)slides.splice(slides.indexOf(s),1);
+      renderSlides();refreshBar();
+    });
+    bt.appendChild(del);row.appendChild(bt);box.appendChild(row);
+  });
+  if(!slides.length){const e=document.createElement('div');e.className='hint';e.textContent='مفيش صور. ضيف صورة من الزرار اللي تحت.';box.appendChild(e)}
+}
+function moveSlide(s,d){
+  const act=slides.filter(x=>!x.removed);
+  const k=act.indexOf(s),o=act[k+d];if(!o)return;
+  const a=slides.indexOf(s),b=slides.indexOf(o);slides[a]=o;slides[b]=s;
+  slideOrderDirty=true;renderSlides();refreshBar();
+}
+function prepImage(file){
+  return new Promise(res=>{
+    const fallback=()=>{
+      const r=new FileReader();
+      r.onload=()=>{
+        let ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+        if(!ext||ext.length>5)ext='jpg';
+        res({data:r.result,ext});
+      };
+      r.onerror=()=>res(null);
+      r.readAsDataURL(file);
+    };
+    try{
+      const url=URL.createObjectURL(file);
+      const img=new Image();
+      img.onload=()=>{
+        try{
+          let w=img.naturalWidth,h=img.naturalHeight;
+          const max=1400;
+          if(w>max){h=Math.round(h*max/w);w=max}
+          const c=document.createElement('canvas');c.width=w;c.height=h;
+          c.getContext('2d').drawImage(img,0,0,w,h);
+          URL.revokeObjectURL(url);
+          res({data:c.toDataURL('image/jpeg',0.85),ext:'jpg'});
+        }catch(e){URL.revokeObjectURL(url);fallback()}
+      };
+      img.onerror=()=>{URL.revokeObjectURL(url);fallback()};
+      img.src=url;
+    }catch(e){fallback()}
+  });
+}
+$('addslide').addEventListener('click',()=>{
+  if(slides.filter(s=>!s.removed).length>=MAXSLIDES){msg('أقصى عدد للصور '+MAXSLIDES+'. امسح صورة الأول.','err');return}
+  fileTarget=-1;const inp=$('slideFile');inp.multiple=true;inp.click();
+});
+$('slideFile').addEventListener('change',async e=>{
+  const fs=Array.from(e.target.files||[]);e.target.value='';
+  if(!fs.length)return;
+  msg('بنجهز الصور...');
+  for(const f of fs){
+    if(fileTarget<0&&slides.filter(s=>!s.removed).length>=MAXSLIDES){msg('أقصى عدد للصور '+MAXSLIDES+'. الباقي ما اتضافش.','err');break}
+    const p=await prepImage(f);
+    if(!p){msg('في صورة مش قادر أقراها. جرب صورة تانية.','err');continue}
+    const name='slider-'+Date.now().toString(36)+'-'+Math.floor(Math.random()*46656).toString(36)+'.'+p.ext;
+    if(fileTarget>=0&&slides[fileTarget]){
+      slides[fileTarget].file={name,data:p.data};
+      slides[fileTarget].preview=p.data;
+    }else{
+      slides.push({el:null,src:null,alt:'صورة من بيتزا الإسراء',file:{name,data:p.data},preview:p.data,added:true,removed:false});
+    }
+    await new Promise(r=>setTimeout(r,30));
+  }
+  fileTarget=-1;renderSlides();refreshBar();
+  msg('الصورة جاهزة. دوس "حفظ التعديلات" تحت عشان تتنزل على المنيو.');
+});
+function applySlides(){
+  if(!sliderDirtyCount())return;
+  const cont=doc.querySelector('.pm-slides');if(!cont)return;
+  cont.innerHTML='';
+  slides.filter(s=>!s.removed).forEach((s,idx)=>{
+    let el=s.el;
+    if(!el){el=doc.createElement('div');el.className='pm-slide';el.appendChild(doc.createElement('img'))}
+    const img=el.querySelector('img');
+    img.setAttribute('src',s.file?s.file.name:s.src);
+    img.setAttribute('alt',s.alt||'صورة من بيتزا الإسراء');
+    el.className='pm-slide'+(idx===0?' on':'');
+    if(idx===0){img.setAttribute('fetchpriority','high');img.removeAttribute('loading')}
+    else{img.setAttribute('loading','lazy');img.setAttribute('decoding','async');img.removeAttribute('fetchpriority')}
+    cont.appendChild(el);
+  });
+}
+async function uploadSlides(){
+  const news=slides.filter(s=>!s.removed&&s.file);
+  for(const s of news){
+    const b64=s.file.data.split(',')[1];
+    const url='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+s.file.name;
+    let r;
+    try{
+      r=await fetch(url,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr()),
+        body:JSON.stringify({message:'Slider photo from editor',content:b64,branch:BR})});
+    }catch(e){return{error:'مفيش نت أو حصل خطأ أثناء رفع الصور. جرب تاني.'}}
+    if(!r.ok)return{error:'رفع صورة فشل ('+r.status+'). جرب تاني.'}
+  }
+  return{ok:true};
+}
 $('addsec').addEventListener('click',()=>{
   const n=$('sname').value.trim();
   if(!n){msg('اكتب اسم القسم الأول.','err');return}
@@ -327,6 +480,7 @@ function build(){
     const nav=doc.querySelector('nav.pm-tabs');
     secs().forEach(sec=>{const tab=nav.querySelector('a[href="#'+sec.id+'"]');if(tab)nav.appendChild(tab)});
   }
+  applySlides();
   // general texts
   globals.forEach(g=>{if(globalChanged(g))g.set(g.el,g.val)});
   return {html:'<!doctype html>\n'+doc.documentElement.outerHTML+'\n'};
@@ -338,6 +492,14 @@ $('save').addEventListener('click',async()=>{
   const out=build();
   if(out.error){msg(out.error,'err');return}
   btn.disabled=true;btn.textContent='بيتحفظ...';
+  const actN=slides.filter(s=>!s.removed).length;
+  if(sliderDirtyCount()&&actN<1){msg('لازم يفضل صورة واحدة على الأقل في السلايدر.','err');btn.disabled=false;refreshBar();return}
+  if(sliderDirtyCount()){
+    btn.textContent='بترفع الصور...';
+    const up=await uploadSlides();
+    if(up.error){msg(up.error,'err');btn.disabled=false;refreshBar();return}
+    btn.textContent='بيتحفظ...';
+  }
   try{
     const r=await fetch(API,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr()),
       body:JSON.stringify({message:'Menu update from editor',content:b64enc(out.html),sha,branch:BR})});
