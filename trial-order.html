@@ -12,83 +12,62 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
-  body{
-    font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:var(--cream); color:var(--ink);
-    padding-bottom:110px;
-  }
-  header.top{
-    background:var(--cream); padding:10px 16px 6px; display:flex; align-items:center; justify-content:space-between; gap:10px;
-  }
-  header.top img{width:112px; height:auto; display:block; mix-blend-mode:multiply}
+  body{font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:var(--cream); color:var(--ink); padding-bottom:104px}
+  header.top{background:var(--cream); padding:10px 16px 6px; display:flex; align-items:center; justify-content:space-between; gap:10px}
+  header.top img{width:110px; height:auto; display:block; mix-blend-mode:multiply}
   header.top .call{font-size:12px; color:var(--muted); text-align:left; line-height:1.5}
   header.top .call b{display:block; color:var(--red); font-size:16px; letter-spacing:.5px}
-  .back{
-    display:flex; align-items:center; gap:6px; padding:6px 16px 10px; font-size:13px; color:var(--muted);
-    text-decoration:none; border-bottom:1px solid var(--line);
-  }
-  .back b{color:var(--red-dark); font-weight:700}
-  main{padding:12px 16px 8px}
-  @media (min-width:760px){
-    header.top, .back, main, footer, .bar{max-width:720px; margin-left:auto; margin-right:auto}
-  }
+  .back{display:block; padding:6px 16px 10px; font-size:13px; color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line)}
+  .back b{color:var(--red-dark)}
+  main{padding:10px 14px 6px}
+  @media (min-width:760px){ header.top, .back, main, footer, .bar{max-width:720px; margin-left:auto; margin-right:auto} }
   h2.sec{
-    font-size:15px; margin:16px 2px 10px; color:var(--red-dark); letter-spacing:.3px;
-    display:flex; align-items:baseline; gap:8px;
+    font-size:14px; margin:16px 2px 8px; padding:8px 12px; border-radius:12px; background:var(--ink); color:#fff;
+    display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight:800;
   }
-  h2.sec small{font-size:11px; color:var(--muted); font-weight:400; letter-spacing:1px}
-  article.card{
-    background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden;
-    margin-bottom:14px; box-shadow:0 2px 10px rgba(27,27,27,.05);
+  h2.sec small{color:#ff8a8a; font-size:11px; letter-spacing:1px}
+  .item{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:8px; margin-bottom:8px}
+  .item .thumb{width:66px; height:66px; flex:0 0 auto; border-radius:10px; overflow:hidden; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center}
+  .item .thumb img{width:100%; height:100%; object-fit:cover; display:block}
+  .item .thumb .ph{font-size:9px; color:#b9aea3; text-align:center; padding:4px; line-height:1.3}
+  .item .mid{flex:1; min-width:0}
+  .item .mid b{display:block; font-size:14px}
+  .item .mid .d{display:block; font-size:11px; color:var(--muted); line-height:1.45; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .chips{display:flex; gap:6px; margin-top:6px}
+  .chips button{
+    font-family:inherit; font-size:11.5px; padding:4px 9px; border-radius:8px; border:1px solid var(--line);
+    background:#fff; color:var(--ink); cursor:pointer;
   }
-  .ph{background:#fff; border-bottom:1px solid var(--line)}
-  .ph img{width:100%; aspect-ratio:3/2; object-fit:contain; display:block}
-  .body{padding:12px 14px 14px}
-  .body h3{margin:0 0 4px; font-size:17px}
-  .body p{margin:0 0 12px; font-size:13px; line-height:1.6; color:var(--muted)}
-  .sizes{display:flex; gap:8px; margin-bottom:10px}
-  .sizes button{
-    flex:1; font-family:inherit; cursor:pointer; background:#fff; border:1.5px solid var(--line); border-radius:12px;
-    padding:9px 6px; font-size:13px; color:var(--ink); display:flex; flex-direction:column; gap:2px; align-items:center;
-  }
-  .sizes button b{font-size:15px}
-  .sizes button.on{border-color:var(--red); background:#fff2f2; color:var(--red-dark)}
-  .add{
-    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--red);
-    border:0; border-radius:12px; padding:12px; cursor:pointer;
-  }
-  .add:active{background:var(--red-dark)}
-  .single-price{font-size:16px; font-weight:700; margin:0 0 10px}
-  .box{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:12px 14px; margin-bottom:14px}
+  .chips button.on{border-color:var(--red); background:#fff2f2; color:var(--red-dark); font-weight:700}
+  .chips .one{font-size:12px; font-weight:800; color:var(--red-dark); padding:4px 0}
+  .item .plus{width:34px; height:34px; flex:0 0 auto; border-radius:10px; border:0; background:var(--red); color:#fff; font-size:20px; line-height:1; cursor:pointer; font-family:inherit}
+  .box{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 14px; margin-bottom:12px}
   ul.lines{list-style:none; margin:0; padding:0}
-  ul.lines li{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line)}
+  ul.lines li{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line)}
   ul.lines li:last-child{border-bottom:0}
-  ul.lines .nm{flex:1; font-size:13.5px; line-height:1.5}
-  ul.lines .nm small{display:block; color:var(--muted); font-size:11.5px}
-  .qty{display:flex; align-items:center; gap:8px}
-  .qty button{
-    width:30px; height:30px; border-radius:9px; border:1px solid var(--line); background:#fff; font-size:16px;
-    font-family:inherit; cursor:pointer; color:var(--ink); line-height:1;
-  }
-  .qty span{min-width:14px; text-align:center; font-size:14px; font-weight:700}
-  .line-price{font-size:13.5px; font-weight:700; min-width:52px; text-align:left}
-  .empty{color:var(--muted); font-size:13px; text-align:center; padding:14px 0}
-  .total{display:flex; justify-content:space-between; align-items:baseline; font-size:14px; margin:10px 0 0; padding-top:10px; border-top:1px solid var(--line)}
-  .total b{font-size:19px; color:var(--red-dark)}
+  ul.lines .nm{flex:1; font-size:13px; line-height:1.45}
+  ul.lines .nm small{display:block; color:var(--muted); font-size:11px}
+  .qty{display:flex; align-items:center; gap:7px}
+  .qty button{width:28px; height:28px; border-radius:8px; border:1px solid var(--line); background:#fff; font-size:15px; font-family:inherit; cursor:pointer; color:var(--ink); line-height:1}
+  .qty span{min-width:12px; text-align:center; font-size:13px; font-weight:700}
+  .line-price{font-size:13px; font-weight:700; min-width:50px; text-align:left}
+  .empty{color:var(--muted); font-size:13px; text-align:center; padding:12px 0}
+  .totals{margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:13.5px}
+  .totals div{display:flex; justify-content:space-between; padding:3px 0}
+  .totals .grand{font-size:16px; font-weight:800; color:var(--red-dark); margin-top:4px}
   form.of{display:flex; flex-direction:column; gap:4px}
   .of label{font-size:12px; color:var(--muted); margin:6px 2px 0}
-  .of input,.of textarea{
-    font-family:inherit; font-size:14px; padding:11px 12px; border:1.5px solid var(--line); border-radius:12px;
+  .of input,.of textarea,.of select{
+    font-family:inherit; font-size:14px; padding:10px 12px; border:1.5px solid var(--line); border-radius:11px;
     background:#fff; color:var(--ink); width:100%;
   }
-  .of input:focus,.of textarea:focus{outline:0; border-color:var(--red)}
+  .of input:focus,.of textarea:focus,.of select:focus{outline:0; border-color:var(--red)}
   .of input[type=tel]{direction:ltr; text-align:right}
-  .of textarea{min-height:76px; resize:vertical; line-height:1.6}
-  .err{color:var(--red); font-size:12px; margin:4px 2px 0; display:none}
+  .of textarea{min-height:70px; resize:vertical; line-height:1.6}
+  .err{color:var(--red); font-size:12px; margin:6px 2px 0; display:none}
   .err.on{display:block}
-  .bar{
-    position:fixed; inset-inline:0; bottom:0; z-index:40; padding:10px 14px calc(12px + env(safe-area-inset-bottom));
-    background:linear-gradient(180deg,rgba(255,246,232,0) 0%,var(--cream) 45%);
-  }
+  .fee{font-size:12px; color:var(--muted); margin-top:6px}
+  .bar{position:fixed; inset-inline:0; bottom:0; z-index:40; padding:10px 14px calc(12px + env(safe-area-inset-bottom)); background:linear-gradient(180deg,rgba(255,246,232,0) 0%,var(--cream) 45%)}
   .bar button{
     width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--green);
     border:0; border-radius:14px; padding:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
@@ -104,63 +83,43 @@
   <img src="logo-wide.png" alt="بيتزا الإسراء">
   <div class="call">الخط الساخن<b>15410</b></div>
 </header>
-<a class="back" href="trial-menu.html">→ <span>رجوع للمنيو الأصلي</span></a>
+<a class="back" href="trial-menu.html">→ <b>رجوع للمنيو الأصلي</b></a>
 
 <main>
-  <h2 class="sec">١. اختار من المنيو <small>MENU</small></h2>
+  <div id="menu"></div>
 
-  <article class="card" data-name="بيتزا دجاج" data-m="145" data-l="185" data-size="L">
-    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D9%81%D8%B1%D8%A7%D8%AE.jpg" alt="بيتزا دجاج"></div>
-    <div class="body">
-      <h3>بيتزا دجاج</h3>
-      <p>قطع الدجاج الطازج مع الفلفل والزيتون</p>
-      <div class="sizes">
-        <button type="button" data-size="M">وسط <b>145</b></button>
-        <button type="button" data-size="L" class="on">كبير <b>185</b></button>
-      </div>
-      <button type="button" class="add">أضف للسلة · 185 ج.م</button>
-    </div>
-  </article>
-
-  <article class="card" data-name="بيتزا تشيكن شيدر" data-m="155" data-l="200" data-size="L">
-    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%AA%D8%B4%D9%8A%D9%83%D9%86-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بيتزا تشيكن شيدر"></div>
-    <div class="body">
-      <h3>بيتزا تشيكن شيدر</h3>
-      <p>دجاج مع صوص الشيدر الطبيعي</p>
-      <div class="sizes">
-        <button type="button" data-size="M">وسط <b>155</b></button>
-        <button type="button" data-size="L" class="on">كبير <b>200</b></button>
-      </div>
-      <button type="button" class="add">أضف للسلة · 200 ج.م</button>
-    </div>
-  </article>
-
-  <article class="card" data-name="بطاطس تشيكن شيدر" data-single="85">
-    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%B3%D8%AA%D8%B1%D8%A8%D8%B3-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بطاطس تشيكن شيدر"></div>
-    <div class="body">
-      <h3>بطاطس تشيكن شيدر</h3>
-      <p class="single-price">85 ج.م</p>
-      <button type="button" class="add">أضف للسلة · 85 ج.م</button>
-    </div>
-  </article>
-
-  <h2 class="sec">٢. السلة <small>CART</small></h2>
+  <h2 class="sec"><span>السلة</span><small>CART</small></h2>
   <div class="box">
     <ul class="lines" id="lines"></ul>
-    <div class="total"><span>الإجمالي</span><b><span id="total">0</span> ج.م</b></div>
+    <div class="totals">
+      <div><span>إجمالي الأصناف</span><span><span id="sub">0</span> ج.م</span></div>
+      <div><span>التوصيل</span><span><span id="feeOut">—</span></span></div>
+      <div class="grand"><span>الإجمالي</span><span><span id="grand">0</span> ج.م</span></div>
+    </div>
   </div>
 
-  <h2 class="sec">٣. بيانات الطلب <small>YOUR DETAILS</small></h2>
+  <h2 class="sec"><span>بيانات الطلب</span><small>YOUR DETAILS</small></h2>
   <div class="box">
     <form class="of" id="orderForm" novalidate>
       <label for="nm">الاسم (لازم)</label>
       <input id="nm" name="nm" type="text" placeholder="اسمك" autocomplete="name">
       <label for="ph1">تليفون ١ (لازم)</label>
       <input id="ph1" name="ph1" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
-      <label for="ph2">تليفون ٢ (اختياري)</label>
+      <label for="ph2">تليفون ٢ (لازم)</label>
       <input id="ph2" name="ph2" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
       <label for="addr">العنوان بالتفصيل (لازم)</label>
-      <textarea id="addr" name="addr" placeholder="المدينة / المنطقة، الشارع، رقم العمارة، الدور، الشقة، وأقرب علامة" autocomplete="street-address"></textarea>
+      <textarea id="addr" name="addr" placeholder="الشارع، رقم العمارة، الدور، الشقة، وأقرب علامة" autocomplete="street-address"></textarea>
+    </form>
+  </div>
+
+  <h2 class="sec"><span>الفرع والتوصيل</span><small>BRANCH &amp; DELIVERY</small></h2>
+  <div class="box">
+    <form class="of" novalidate>
+      <label for="branch">الفرع</label>
+      <select id="branch"></select>
+      <label for="zone">منطقة التوصيل (لازم)</label>
+      <select id="zone"></select>
+      <p class="fee" id="feeNote">اختار المنطقة عشان تتحسب قيمة التوصيل.</p>
       <p class="err" id="err"></p>
     </form>
   </div>
@@ -168,7 +127,7 @@
 
 <footer>
   نسخة تجريبية · الطلب مش بيتسجل عند المطعم لحد ما يتم الاتفاق على التشغيل.<br>
-  الأسعار بالجنيه المصري زي المنيو الأصلي · للاستفسار: <b>15410</b>
+  الأسعار زي المنيو الأصلي · قيم التوصيل زي الموقع الرسمي · للاستفسار: <b>15410</b>
 </footer>
 
 <div class="bar">
@@ -179,64 +138,156 @@
 </div>
 
 <script>
+var DATA = {"items":[{"id":"chicken","ar":"بيتزا دجاج","en":"CHICKEN","items":[{"id":"i1","name":"دجاج","desc":"قطع الدجاج الطازج مع الفلفل والزيتون","prices":{"M":145,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/فراخ.jpg"},{"id":"i2","name":"استربس (حار - بارد)","desc":"صدور دجاج مقرمشة","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/ستريبس.jpg"},{"id":"i3","name":"تشيكن شيدر","desc":"دجاج مع صوص الشيدر الطبيعي","prices":{"M":155,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تشيكن-شيدر.jpg"},{"id":"i4","name":"تشيكن باربكيو","desc":"دجاج مع صوص الباربيكيو","prices":{"M":155,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تشكين-باربكيو.jpg"},{"id":"i5","name":"تشيكن رانش","desc":"دجاج مع صوص الرانش","prices":{"M":155,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تشيكن-رانش.jpg"},{"id":"i6","name":"بيتزا شيش طاووق","desc":"قطع شيش طاووق مع الفلفل والزيتون","prices":{"M":145,"L":195},"img":""}]},{"id":"cheese","ar":"بيتزا جبن","en":"CHEESE","items":[{"id":"i7","name":"مرجريتا","desc":"صوص البيتزا مع الجبنة الموتزاريلا","prices":{"M":120,"L":160},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"},{"id":"i8","name":"خضروات","desc":"فلفل ألوان وشرائح البصل والزيتون","prices":{"M":125,"L":165},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/خضار.jpg"},{"id":"i9","name":"فور تشيز","desc":"شيدر وجبن رومي وكيري وموتزاريلا","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"},{"id":"i10","name":"مشروم","desc":"مشروم وفلفل وزيتون","prices":{"M":140,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان.jpg"}]},{"id":"meat","ar":"بيتزا لحوم","en":"MEAT","items":[{"id":"i11","name":"هوت دوج","desc":"شرائح هوت دوج","prices":{"M":140,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان-21.jpg"},{"id":"i12","name":"سلامي","desc":"شرائح سلامي","prices":{"M":140,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/images-2.jpg"},{"id":"i13","name":"بسطرمة","desc":"شرائح البسطرمة مع الجبن","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/bastrma-scaled.png"},{"id":"i14","name":"لحم مفروم","desc":"لحم مفروم وفلفل وزيتون","prices":{"M":145,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/طريقة_حمس_اللحم_المفروم.jpg"},{"id":"i15","name":"سجق","desc":"سجق متبل ومجهز","prices":{"M":145,"L":185},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/2019_3_17_0_13_2_344.jpg"},{"id":"i16","name":"سجق كيري","desc":"سجق مع الجبنة الكيري والخيار المخلل","prices":{"M":160,"L":205},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/Artboard-1.png"},{"id":"i17","name":"بسطرمة كيري","desc":"بسطرمة مع الجبنة الكيري","prices":{"M":160,"L":205},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/Artboard-2.png"}]},{"id":"sea","ar":"البحريات","en":"SEAFOOD","items":[{"id":"i18","name":"تونة","desc":"تونة مع البصل والفلفل الألوان","prices":{"S":210},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تونة.jpg"},{"id":"i19","name":"سي فود","desc":"جمبري وكابوريا","prices":{"M":215,"L":275},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/9.jpg"},{"id":"i20","name":"سي فود رانش","desc":"جمبري وكابوريا بصوص الرانش","prices":{"M":225,"L":290},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/سي-فود-رانش.jpg"}]},{"id":"mixes","ar":"مكسات","en":"MIXES","items":[{"id":"i21","name":"مكس دجاج","desc":"دجاج طازج ودجاج مقرمش","prices":{"M":150,"L":195},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/1.jpg"},{"id":"i22","name":"مكس لحوم","desc":"سجق ومفروم وبسطرمة","prices":{"M":160,"L":205},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان-21.jpg"},{"id":"i23","name":"سوبريم لحوم","desc":"لحم مفروم وهوت دوج وببروني","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/supremmeat-1-scaled.png"},{"id":"i24","name":"سوبريم دجاج","desc":"دجاج وتركي مدخن ومشروم","prices":{"M":155,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/سوبريم-فراخ.jpg"},{"id":"i25","name":"فاهيتا دجاج","desc":"دجاج وبصل وفلفل ومشروم وباربيكيو","prices":{"M":155,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/فراخ-فاهيتا.jpg"},{"id":"i26","name":"كرانشي (حار - بارد)","desc":"دجاج مقرمش وهوت دوج","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/كرانشي.jpg"},{"id":"i27","name":"كرانشي تشيلي حار","desc":"دجاج مقرمش وهوت دوج وصوص التشيلي","prices":{"M":160,"L":210},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/كرانشي-تشيلي.jpg"},{"id":"i28","name":"دوتشي","desc":"هوت دوج ودجاج وبسطرمة","prices":{"M":150,"L":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/daotchy-1-scaled.png"},{"id":"i29","name":"بسطرمة تشيكن باربكيو","desc":"بسطرمة وقطع الفراخ وباربيكيو","prices":{"M":165,"L":210},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/بسطرمة-تشكن-باربكيو.jpg"},{"id":"i30","name":"تشيز ببروني","desc":"دبل ببروني بقري مع مكس جبن","prices":{"M":155,"L":205},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/دابل-ببروني-تشيز.jpg"},{"id":"i31","name":"سماش برجر","desc":"برجر بقري ومكس جبن وصوص التكساس","prices":{"M":150,"L":220},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تكساس-برجر.jpg"},{"id":"i32","name":"دبل استربس","desc":"دجاج مقرمش وتركي مدخن وخس كابوتشا","prices":{"S":200},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/دابل-ستريبس.jpg"},{"id":"i33","name":"بيكن تشيكن رانش","desc":"دجاج وبيف بيكن وصوص الرانش","prices":{"M":180,"L":245},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تشيكن-رانش.jpg"},{"id":"i34","name":"هاواي","desc":"دجاج وبيف بيكن وأناناس","prices":{"M":195,"L":260},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/11/WhatsApp-Image-2026-11-16-at-9.34.25-PM.jpeg"},{"id":"i35","name":"هاواي تشيلي","desc":"استربس حار وبيف بيكن وأناناس وتشيلي","prices":{"M":190,"L":260},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/WhatsApp-Image-2026-08-07-at-11.25.45-PM.jpeg"}]},{"id":"add","ar":"إضافات البيتزا","en":"ADD","items":[{"id":"i36","name":"حشو أطراف","desc":"","prices":{"M":30,"L":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/stuffed-crust-pizza-sausage-or-cheese-v0-4shnp3bakh7g1.jpg"},{"id":"i37","name":"موتزاريلا","desc":"","prices":{"M":30,"L":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان-2.jpg"},{"id":"i38","name":"سي فود","desc":"","prices":{"M":65,"L":85},"img":""},{"id":"i39","name":"لحوم وفراخ","desc":"","prices":{"M":40,"L":50},"img":""},{"id":"i40","name":"مشروم","desc":"","prices":{"M":35,"L":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان.jpg"},{"id":"i41","name":"خضار (فلفل - زيتون)","desc":"","prices":{"S":5},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان.png"},{"id":"i42","name":"هالبينو","desc":"","prices":{"S":5},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/images-1.jpg"},{"id":"i43","name":"صوصات","desc":"تكساس · رانش · باربكيو · تشيلي · شيدر","prices":{"M":20,"L":35},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/صوص-باربكيو.jpg"}]},{"id":"fries","ar":"بطاطس","en":"FRIES","items":[{"id":"i44","name":"فارم","desc":"","prices":{"S":35},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/فرايز.jpg"},{"id":"i45","name":"بطاطس كريسبي","desc":"","prices":{"S":45},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/بطاطس-كرسبي.jpg"},{"id":"i46","name":"شيدر","desc":"","prices":{"S":50},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/فرايز-شيدر.jpg"},{"id":"i47","name":"شيدر هالبينو","desc":"","prices":{"S":60},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/هالبينو.jpg"},{"id":"i48","name":"تشيكن رانش","desc":"","prices":{"S":85},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/ستربس-رانش.jpg"},{"id":"i49","name":"تشيكن شيدر","desc":"","prices":{"S":85},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/ستربس-شيدر.jpg"}]},{"id":"kids","ar":"كيدز","en":"KIDS' MEAL","items":[{"id":"i50","name":"استربس","desc":"بيتزا قطع استربس 4 اسلايز مع عصير مع لعبة اطفال","prices":{"S":100},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"},{"id":"i51","name":"فور تشيز","desc":"بيتزا شرائح فور تشيز 4 اسلايز مع عصير مع لعبة اطفال","prices":{"S":90},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"},{"id":"i52","name":"مرجريتا","desc":"بيتزا مرجريتا صوص طماطم مع الجبنة الموتزريلا مع عصير مع لعبة اطفال","prices":{"S":70},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"},{"id":"i53","name":"دجاج","desc":"بيتزا شرائح الدجاج 4 اسلايز مع عصير مع لعبة اطفال","prices":{"S":100},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/08/تصميم-بدون-عنوان-30.jpg"}]},{"id":"drinks","ar":"مشروبات","en":"DRINKS","items":[{"id":"i54","name":"في كولا","desc":"","prices":{"S":20},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/images.jpg"},{"id":"i55","name":"بيج كولا","desc":"","prices":{"S":30},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان-11.jpg"},{"id":"i56","name":"ماكس كولا","desc":"","prices":{"S":15},"img":""},{"id":"i57","name":"مياه","desc":"","prices":{"S":8},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/images-2-2.jpg"}]},{"id":"sides","ar":"إضافات جانبية","en":"SIDES","items":[{"id":"i58","name":"كلوسلو","desc":"","prices":{"S":35},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/650405224_1397592642397523_616486246820544201_n.jpg"},{"id":"i59","name":"علبة شيدر","desc":"","prices":{"S":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/صوص-شيدر.jpg"},{"id":"i60","name":"علبة رانش","desc":"","prices":{"S":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/صوص-رانش.jpg"},{"id":"i61","name":"علبة باربكيو","desc":"","prices":{"S":40},"img":""},{"id":"i62","name":"علبة تكساس","desc":"","prices":{"S":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/صوص-تيكساس.jpg"},{"id":"i63","name":"علبة تشيلي حار","desc":"","prices":{"S":40},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/صوص-شيلي.jpg"},{"id":"i64","name":"بوكس السلطات","desc":"كلوسلو - بنجر - فاصوليا - مخلل","prices":{"S":120},"img":"https://pizzaalesraa.com/wp-content/uploads/2026/07/تصميم-بدون-عنوان-2.png"}]}],"branches":{"ميت غمر":[["بورسعيد",20],["المحطه",20],["شارع الجيش",20],["26 يوليو",20],["دقادوس",20],["شارع التجارة",20],["وش البلد",20],["شارع صادق",20],["شارع حسنى",20],["ارض السايس",20],["الصنايع المعماريه",20],["عزبه بركات",20],["مجلس المدينه",20],["النويهى",20],["البر التاني",25],["فاطمه الزهراء",20],["عمر افندى",20],["شارع الخزان",20],["مصنع الغزل",20],["قبل سوق الجمله",20],["قبل برج عابدين",20],["شارع الحريه",20],["امن الدولة ميت غمر",20],["شارع ابوسنه",20],["شارع سليكت",20],["ملعب الكابيتانو",20],["موقف المنصورة",20],["بنزينه الشريف",30],["قاعه فيرجينيا",20],["موقف العاشر",20],["الصوامع",20],["العرشه",20],["شارع المحطه",20],["المقدام",75],["حارة اليهود",20],["مستشفى كليوبترا",20],["مستشفى ميت غمر",20],["المرور",20],["الجوزات",20],["حديقه احمد عرابى",20],["مستشفى الكلى",20],["شركه الاتوبيس",20],["شارع السرفيس",20],["ارض النت",20],["التأمين الصحى",20],["نادى ميت غمر",20],["صيدليه مجدى الجوهرى",20],["اول الحاجبى",20],["حديقه المنتزة",20],["شركه الامن",25],["مسجد بدر",20],["كنيسه دقادوس",20],["الكابتن دقادوس",20],["الشعراوى دقادوس",20],["مصنع الصفيح دقادوس",20],["رنين",20],["كافيه ركنه",20],["شارع الأسمر",20],["كنيسه ميت غمر",20],["مسجد الغمرى",20],["موقف القاهرة",20],["محكمه ميت غمر",20],["محكمه الاسرة",20],["شارع المعاهدة",20],["التربيه النوعيه",20],["جسر النيل",20],["شركه المياة",20],["قاعه كرستاله",20],["البر التانى بعد المكاوى",30],["عزبة بدر",30],["مصنع صرموح",30],["القسم الجديد",30],["مصنع المرشدى",30],["الجمعيه الزراعيه",30],["السلخانه",30],["قاعه القصر",30],["الجزيرة شبكه الكهرباء",25],["قهوة المصراويه",25],["المدرسه اليابانيه",25],["ملعب أبو النيل",30],["مدافن المسلمين",25],["منشار الخشب",30],["قاعه ميراج",30],["مدافن الحاجبى",35],["مدرسه الحاجبى",35],["الصوفى",35],["قاعه جراند هول",30],["عزبه شاهين",30],["نادى الوليد",35],["قاعه الماسه",35],["عزبة هلال",35],["ميت محسن",35],["كوبرى الحاجبى التانى",30],["الكمنورى القديم",35],["أبو نبهان",40],["كفر الشراقوة",40],["قاعه ريفيرا",35],["بشالوش",40],["كوم النور",45],["ميت ناجى",45],["كفر سرنجا",50],["بشلا",50],["سنتماى",45],["زفتى",40],["الكمنورى الجديد",40],["مدخل اول دنديط",50],["مدخل تانى دنديط",55],["مدخل تالت دنديط",60],["دهتورة",50],["كوم النور كوبرى ام حسن",50],["وليله",65],["المعصرة",60],["سندبسط",55],["كفر النعمان",55],["كفر بهيدة",60],["سرنجا",60],["سنبو مقام",55],["مسجد وصيف",85],["تفهنا الاشراف",70],["صهرجت الكبري",65],["دماص",100],["شونه القطن",20],["نهطاي",75],["ميت العز",80],["كفر النعيم",40],["شارع المعهد الديني فرع ميت غمر",20],["كفر الوزير",60]],"طنطا":[["الاستاد",25],["محمد جابر",25],["مستشفى ام القرى",25],["مستشفي رسالان",25],["الهنا",25],["مستشفى ابوفرحة",25],["ابن سينا",25],["البندارى",25],["شارع الحياة",25],["توفيق غرابه",35],["مدرسه الزراعه طنطا",25],["كورنيش الاستاد",25],["شارع إبراهيم الخليل",25],["شارع عبدالرؤوف رمضان",25],["حمزة بن عبدالمطلب",25],["قحافة",35],["عمر بن عبدالعزيز",35],["السيد عبد الحافظ",35],["شارع الجيش طنطا",35],["مستشفى السلام",35],["شارع خرسيت",40],["مستشفى الجامعة",35],["القذافى",35],["حسين عزو",25],["محمد حلمى غرابه",30],["اول شوبر من السريع",35],["المقاولون العرب",35],["شارع السلام",35],["جامع الجندى",35],["المطاحن",30],["اول شوبر عند مكنة المياه",35],["كوبرى المعرض",30],["بطرس",40],["الفاتح",40],["على بك",35],["بعد معرض الجمله",35],["توت عنخ امون",40],["المأسورة",35],["طريق شوبر",35],["طه الحكيم",40],["ميدان الساعه",40],["النحاس",40],["شارع النادى",35],["شارع البرصه",35],["دوران الاشرف",35],["ابن الفارض",40],["عثمان بن عفان",35],["شارع ابن سينا",35],["شارع النور",35],["شارع ابوبكر",35],["شارع سليمان",35],["قسم تانى",40],["الفاتح لحدعلى مبارك",35],["سبرباى",45],["كفر عصام",35],["حسن رضوان",40],["السلطان مراد مع أي تقاطع",35],["القرشي",40],["ثروت القديم",35],["شارع رشدى",35],["ناجى الصيفى",35],["شارع سعيد",35],["حسان ابن ثابت",35],["شارع امرؤ القيس",35],["مصطفى ماهر",35],["نادى المعلمين",35],["شارع الامبابى",40],["المديريه",35],["أبراج الرياض",35],["محمد عبدة",35],["شارع عبداللطيف",40],["المرشحه",35],["معمر القذافى",35],["على مبارك",35],["سوق الجملة طنطا",40],["سوق الجبان",35],["نادى طنطا",35],["توسكانينى",35],["رشدى",35],["سعيد",35],["ميدان البدراويشىzoone المتوكل",40],["المدارس",35],["سيف الدوله",35],["هارون الرشيد",35],["محمد طلبه",35],["حسن كامل",35],["شوقى",40],["خلف المقاولون العرب",35],["المتوكل",35],["المماليك بعد كوبرى قحاف",35],["الفاتح من البحر",40],["الأمين",35],["سعد الدين",35],["النجاشي",35],["عبدالحليم",35],["هدايه",35],["الويشي",35],["حي الشجرة",35],["أنور",35],["طارق ابن زياد",35],["الناصر",35],["سلامه",35],["عوريبي",35],["المأمون",35],["محمد القصراوى",35],["كورنيش الاشرف",35],["مبنى الاذاعه من السريع",35],["عثمان محمد",35],["شارع معاويه",35],["شارع صبرى",35],["يوسف الصديق",35],["سيد غزال",35],["ابن تيميه",35],["المعتصم",35],["ترعه صنارة",40],["كورنيش المرشحه",40],["فتح الله الخطيب",35],["لقمان الحكيم",35],["ابن مالك",35],["المعرض",35],["حسن حسيب",35],["المتحف",35],["ترعه الشاتي",45],["السلطان مراد",35],["سيجر",40],["الحلو",35],["الشاتي",45],["سكه المحله",45],["مزلقان الجميل",40],["كورنيش بلازا",45],["محمد جعيصه",40],["الغفران",40],["شارع إبراهيم سلام",40],["مصنع الكاوتش",40],["كوبرى الخادم",40],["مصطفى كامل",40],["حافظ وهبه",40],["الجلاء",45],["الحدادين",45],["مسجد سيدى مرزوق",40],["بعد حسن رضوان",40],["25 كوكاكولا",40],["شارع نور الايمان",40],["ميدان اسكندريه",40],["نايف عماد",45],["نجف الجامعه",40],["طنطا إسكان",40],["السيدة خديجه",40],["اول نايف",40],["حلقه السمك",40],["السلخانة",40],["ضحضيرة",40],["محمد عطيه",45],["صدومه",40],["أبو الهول",40],["رياض باشا",40],["نادى ماتريكس",45],["جرجس",40],["ميدان ستوته",45],["كوبرى فاروق",45],["عوارة",40],["خرسيت",40],["الترعه العريضه",50],["المنحر",45],["مول طنطا",50],["منطقه التجنيد",45],["القشطى",45],["شارع صدومه",40],["الجامبيه",45],["الموقف القديم",45],["شارع مكه",45],["الحكمه",45],["احمد عرابى",45],["شارع المعهد الديني فرع طنطا",45],["كوبرى نايف",45],["مساكن الشباب",45],["السلخانه القديمه",40],["بعد مساكن الشباب",50],["مساكن الظباط",50],["محله مرحوم",60],["مرور سالم",50],["كراك الله",50],["قريه وادى النخل",55],["حى النزهه",55],["منشيه الأوقاف",55],["وادى النخيل",55],["قريه نايف على السريع",60],["كارفور",60],["مدرسه فيوتشر",60],["شوبر البلد",80],["ميت السودان",70],["فيشا سليم",80],["مستشفى العياش",25],["مدرسه الزراعة",25],["المماليك",35],["ميت حبيش البحريه",60],["شبرا النمله",90],["الصاغه فرع طنطا",45],["العجيزى",45],["شارع البحر طنطا",40],["عزبه عبد الملك البحريه",85],["مصنع العياشي طريق محلة منوف",35],["الملاحه",50],["المحطه فرع طنطا",40],["الملاحات",50],["محلة منوف",90],["الرجدية",80]],"السنبلاوين":[["طريق الزقازيق",20],["طريق ميت غمر",20],["مزلقان البستان",20],["الطيارة",20],["حمام السباحه على طريق المنصورة",20],["كوبرى عزبه صقر",20],["ارض الجمال",20],["الغرباوى",20],["ملتاز",20],["كافيه افندينا",20],["الميكنه الزراعيه",20],["منشيه السادات",20],["طريق نوب",20],["الشارع الكبير",20],["مسجد الأوقاف",20],["مستشفى العام",20],["مدرسه الصنايع",20],["المشايه",20],["بن بهاء",20],["المعداوى",20],["الحوال",20],["ارض مدين",20],["الساحه الشعبيه فرع السنبلاوين",20],["النخل",20],["مطعم ابن حميدو",20],["الترعه المردومه",20],["شارع صبحى عبد الغنى",20],["شارع الزراعيه",20],["حي أبو فندى",20],["سنترال موجه",20],["شارع عبدالله حسن",20],["مساكن عزبة صقر",20],["البستان",20],["السوعه",20],["شارع ايمن ابوغالى",20],["ورشه الالمنيوم",20],["النساجون الشرقيون",20],["النزهه",20],["البرجاس",20],["حي النزهه",20],["القنطرة",20],["مجلس المدينة",20],["مصنع الأصيل",20],["شارع المستشار",20],["الإدارة التعليميه",20],["فيلا رعب",20],["شارع المحنكر",20],["مقر احمد العوضى",20],["ورشه البندارى",20],["قصر الثقافه",20],["كافيه السروى",20],["شارع على جوهرة",20],["المنشيه الجديدة",20],["تمثال ام كلثوم",20],["أبو لبن",40],["عزبه الحمرا",40],["مدرسه الزراعه",30],["بدوى",35],["بدنده",35],["منشيه زيدان",30],["حي الزهور",40],["مصنع الغرباوى",35],["عزبه امينه",35],["الحمرا",40],["الشناوى",45],["عزبة فهمى",45],["العزب",50],["ديوى",55],["منشيه جبران",55],["طرانيش",60],["طماى الزهايرة",60],["نوب طريف",50],["عزبه شعبان",60],["بشمس",55],["شبرا قباله",60],["ديوى الوسطى",50],["الشرفه",60],["طنبارة",60],["الحصاينه",60],["برج نور العرب",65],["كفر يوسف",85],["برقين",65],["الزهايرة",65],["الروضة",65],["بني سالم",70],["الزريقى",75],["القاسمى",75],["أبو شلوبه",80],["المنيا",75],["الشعالة",85],["ميت غريطه",70],["الجلايله",70],["البقليه",80],["أبو الصير",95],["العزاوى",85],["البلامون",85],["شبرا سندى",85],["كفر الروك",85],["التمد",100],["ميت غراب",85],["شبراهور",85],["كفر عزام",90],["كفر قنصوة",85],["طنبول",45],["طنبول السلام",85],["كفر غنام",95],["منشيه صبرى",95],["طنبول الكبرى",95],["المخزن",100],["الرمزيه",90],["الارمان",95],["تمى مدينه",115],["قرقيرة",115],["برهمتوش",115],["طهوى",115],["المتوة",115],["المقاطعه",105],["أبو داوود السباخ",115],["أبو داوود العنب",130],["قريه الربع",125],["ارض عبد الجليل",20],["الحصاينة",40],["قريه سعد الدين سنبلاوين",80],["طوخ الاقلام",50]],"المنصوره":[["الجامعه",30],["احمد ماهر",30],["ساميه جمل",30],["الترعه",30],["المشايه",30],["النخله",30],["الجلاء",30],["المطافي",30],["عبد السلام عارف",35],["سندوب",40],["الاستاد",35],["جديله",40],["قناة السويس",40],["جوزات",30],["طلخا",40],["الهدي والنور",35],["مجمع المحاكم",35],["دراسات",40],["الجيش",35],["جيهان",30],["الجمهوريه",30],["نادي العمال",30],["مدينه الزهراء",30],["مدينه السلام",35],["مدينه الفردوس",30],["مدينه مبارك",35],["مستشفي الصدر",30],["تقسيم بهاء",30],["محطه",30],["توريل",40],["توريل الجديدة",40]]}};
 (function(){
   var PHONE = "201063922247";
-  var cart = [];
+  var money = function(n){ return n + ' ج.م'; };
+  var cart = {};          // key -> {id,name,size,price,qty}
+  var picks = {};         // item id -> size key
+  var itemsById = {};
+
+  var menuEl = document.getElementById('menu');
   var linesEl = document.getElementById('lines');
-  var totalEl = document.getElementById('total');
+  var subEl = document.getElementById('sub');
+  var feeEl = document.getElementById('feeOut');
+  var grandEl = document.getElementById('grand');
   var barTotal = document.getElementById('barTotal');
+  var feeNote = document.getElementById('feeNote');
   var errEl = document.getElementById('err');
   var nm = document.getElementById('nm');
   var ph1 = document.getElementById('ph1');
   var ph2 = document.getElementById('ph2');
   var addr = document.getElementById('addr');
+  var branchSel = document.getElementById('branch');
+  var zoneSel = document.getElementById('zone');
 
-  function money(n){ return n + ' ج.م'; }
+  function sizeKeys(it){ return Object.keys(it.prices); }
+  function sizeLabel(k){ return k === 'M' ? 'وسط' : (k === 'L' ? 'كبير' : ''); }
 
-  function cardPrice(card){
-    if(card.dataset.single) return parseInt(card.dataset.single,10);
-    return parseInt(card.dataset.size === 'M' ? card.dataset.m : card.dataset.l,10);
+  function buildMenu(){
+    DATA.items.forEach(function(group){
+      var h = document.createElement('h2');
+      h.className = 'sec';
+      var s1 = document.createElement('span'); s1.textContent = group.ar;
+      var s2 = document.createElement('small'); s2.textContent = group.en;
+      h.appendChild(s1); h.appendChild(s2);
+      menuEl.appendChild(h);
+
+      group.items.forEach(function(it){
+        itemsById[it.id] = it;
+        var keys = sizeKeys(it);
+        picks[it.id] = keys.indexOf('L') >= 0 ? 'L' : keys[0];
+
+        var row = document.createElement('div');
+        row.className = 'item';
+
+        var th = document.createElement('div');
+        th.className = 'thumb';
+        if(it.img){
+          var img = document.createElement('img');
+          img.src = it.img; img.alt = it.name; img.loading = 'lazy';
+          th.appendChild(img);
+        } else {
+          var ph = document.createElement('div');
+          ph.className = 'ph'; ph.textContent = 'مفيش صورة';
+          th.appendChild(ph);
+        }
+        row.appendChild(th);
+
+        var mid = document.createElement('div');
+        mid.className = 'mid';
+        var b = document.createElement('b'); b.textContent = it.name;
+        mid.appendChild(b);
+        if(it.desc){ var d = document.createElement('span'); d.className = 'd'; d.textContent = it.desc; mid.appendChild(d); }
+
+        var chips = document.createElement('div');
+        chips.className = 'chips';
+        if(keys.length > 1){
+          keys.forEach(function(k){
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = sizeLabel(k) + ' · ' + it.prices[k];
+            btn.classList.toggle('on', k === picks[it.id]);
+            btn.addEventListener('click', function(){
+              picks[it.id] = k;
+              chips.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === btn); });
+            });
+            chips.appendChild(btn);
+          });
+        } else {
+          var one = document.createElement('span');
+          one.className = 'one';
+          one.textContent = money(it.prices[keys[0]]);
+          chips.appendChild(one);
+        }
+        mid.appendChild(chips);
+        row.appendChild(mid);
+
+        var plus = document.createElement('button');
+        plus.type = 'button';
+        plus.className = 'plus';
+        plus.textContent = '+';
+        plus.setAttribute('aria-label', 'أضف ' + it.name);
+        plus.addEventListener('click', function(){ addItem(it.id); });
+        row.appendChild(plus);
+
+        menuEl.appendChild(row);
+      });
+    });
   }
-  function cardSize(card){
-    if(card.dataset.single) return '';
-    return card.dataset.size === 'M' ? 'وسط' : 'كبير';
-  }
 
-  function add(name, size, price){
-    var key = name + '|' + size;
-    var found = cart.filter(function(l){ return l.key === key; })[0];
-    if(found){ found.qty += 1; }
-    else { cart.push({ key:key, name:name, size:size, price:price, qty:1 }); }
+  function addItem(id){
+    var it = itemsById[id];
+    var size = picks[id];
+    var key = id + '|' + size;
+    if(cart[key]) cart[key].qty += 1;
+    else cart[key] = { id:id, name:it.name, size:size, price:it.prices[size], qty:1 };
     render();
+  }
+
+  function subtotal(){
+    var t = 0;
+    Object.keys(cart).forEach(function(k){ t += cart[k].qty * cart[k].price; });
+    return t;
+  }
+  function fee(){
+    var opt = zoneSel.options[zoneSel.selectedIndex];
+    if(!opt || !opt.value) return null;
+    return parseInt(opt.dataset.fee, 10) || 0;
   }
 
   function render(){
     errEl.classList.remove('on');
-    var count = 0, total = 0;
-    cart.forEach(function(l){ count += l.qty; total += l.qty * l.price; });
-    totalEl.textContent = total;
-    barTotal.textContent = total;
+    var sub = subtotal(), f = fee();
+    var grand = sub + (f === null ? 0 : f);
+
+    subEl.textContent = sub;
+    feeEl.textContent = f === null ? '—' : money(f);
+    grandEl.textContent = grand;
+    barTotal.textContent = grand;
 
     linesEl.innerHTML = '';
-    if(cart.length === 0){
+    var keys = Object.keys(cart);
+    if(keys.length === 0){
       var li0 = document.createElement('li');
       li0.className = 'empty';
-      li0.textContent = 'السلة فاضية — ضيف أصناف من فوق';
+      li0.textContent = 'السلة فاضية — ضيف أصناف من المنيو فوق';
       linesEl.appendChild(li0);
       return;
     }
-    cart.forEach(function(l, i){
+    keys.forEach(function(k){
+      var l = cart[k];
       var li = document.createElement('li');
       var nmEl = document.createElement('div');
       nmEl.className = 'nm';
       nmEl.textContent = l.name;
-      if(l.size){ var s = document.createElement('small'); s.textContent = l.size; nmEl.appendChild(s); }
+      if(l.size !== 'S'){ var sm = document.createElement('small'); sm.textContent = sizeLabel(l.size); nmEl.appendChild(sm); }
       var qty = document.createElement('div');
       qty.className = 'qty';
-      var minus = document.createElement('button'); minus.type='button'; minus.textContent = '−';
+      var minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−';
       var num = document.createElement('span'); num.textContent = l.qty;
-      var plus = document.createElement('button'); plus.type='button'; plus.textContent = '+';
-      minus.addEventListener('click', function(){ l.qty -= 1; if(l.qty <= 0){ cart.splice(i,1); } render(); });
+      var plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+';
+      minus.addEventListener('click', function(){ l.qty -= 1; if(l.qty <= 0) delete cart[k]; render(); });
       plus.addEventListener('click', function(){ l.qty += 1; render(); });
       qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
       var pr = document.createElement('div');
@@ -247,63 +298,83 @@
     });
   }
 
+  function fillBranches(){
+    Object.keys(DATA.branches).forEach(function(b){
+      var o = document.createElement('option');
+      o.value = b; o.textContent = 'فرع ' + b;
+      branchSel.appendChild(o);
+    });
+    branchSel.value = DATA.branches['المنصوره'] ? 'المنصوره' : Object.keys(DATA.branches)[0];
+    fillZones();
+  }
+
+  function fillZones(){
+    zoneSel.innerHTML = '';
+    var first = document.createElement('option');
+    first.value = ''; first.textContent = 'اختر منطقة التوصيل...';
+    zoneSel.appendChild(first);
+    (DATA.branches[branchSel.value] || []).forEach(function(z){
+      var o = document.createElement('option');
+      o.value = z[0]; o.textContent = z[0] + ' — ' + money(z[1]);
+      o.dataset.fee = z[1];
+      zoneSel.appendChild(o);
+    });
+    feeNote.textContent = 'اختار المنطقة عشان تتحسب قيمة التوصيل.';
+    render();
+  }
+
   function fail(msg, el){
     errEl.textContent = msg;
     errEl.classList.add('on');
-    if(el){ el.scrollIntoView({block:'center', behavior:'smooth'}); el.focus({preventScroll:true}); }
+    if(el && el.scrollIntoView){ el.scrollIntoView({block:'center', behavior:'smooth'}); if(el.focus) el.focus({preventScroll:true}); }
   }
 
   function send(){
     errEl.classList.remove('on');
-    var total = 0;
-    cart.forEach(function(l){ total += l.qty * l.price; });
-    if(cart.length === 0){ fail('السلة فاضية، ضيف صنف الأول.', null); return; }
+    var keys = Object.keys(cart);
+    if(keys.length === 0){ fail('السلة فاضية، ضيف صنف الأول.', null); return; }
     var name = nm.value.trim();
     var p1 = ph1.value.replace(/[^0-9]/g, '');
     var p2 = ph2.value.replace(/[^0-9]/g, '');
     if(name.length < 2){ fail('اكتب اسمك في خانة الاسم.', nm); return; }
     if(p1.length < 10){ fail('اكتب رقم تليفون صح في خانة تليفون ١.', ph1); return; }
-    if(p2.length > 0 && p2.length < 10){ fail('رقم التليفون التاني مش مظبوط.', ph2); return; }
+    if(p2.length < 10){ fail('رقم تليفون ٢ مطلوب، اكتبه صح.', ph2); return; }
     if(addr.value.trim().length < 8){ fail('اكتب العنوان بالتفصيل (شارع، عمارة، دور، شقة).', addr); return; }
+    var f = fee();
+    if(f === null){ fail('اختار منطقة التوصيل عشان تتحسب قيمة التوصيل.', zoneSel); return; }
 
+    var sub = subtotal(), grand = sub + f;
     var text = 'طلب جديد — منيو الإسراء\n';
-    cart.forEach(function(l){
-      text += '• ' + l.name + (l.size ? ' (' + l.size + ')' : '') + ' × ' + l.qty + ' = ' + (l.qty * l.price) + ' ج.م\n';
+    text += 'الفرع: ' + branchSel.value + '\n';
+    keys.forEach(function(k){
+      var l = cart[k];
+      text += '• ' + l.name + (l.size !== 'S' ? ' (' + sizeLabel(l.size) + ')' : '') + ' × ' + l.qty + ' = ' + (l.qty * l.price) + ' ج.م\n';
     });
-    text += 'الإجمالي: ' + total + ' ج.م\n\n';
+    text += 'إجمالي الأصناف: ' + sub + ' ج.م\n';
+    text += 'التوصيل (' + zoneSel.value + '): ' + f + ' ج.م\n';
+    text += 'الإجمالي: ' + grand + ' ج.م\n\n';
     text += 'الاسم: ' + name + '\n';
     text += 'تليفون ١: ' + p1 + '\n';
-    if(p2){ text += 'تليفون ٢: ' + p2 + '\n'; }
+    text += 'تليفون ٢: ' + p2 + '\n';
     text += 'العنوان: ' + addr.value.trim() + '\n';
     text += '(نسخة تجريبية — الطلب مش بيتسجل عند المطعم)';
 
     window.location.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
   }
 
-  document.querySelectorAll('article.card').forEach(function(card){
-    var addBtn = card.querySelector('.add');
-    var sizeBtns = card.querySelectorAll('.sizes button');
-    function refresh(){ addBtn.textContent = 'أضف للسلة · ' + money(cardPrice(card)); }
-    sizeBtns.forEach(function(b){
-      b.addEventListener('click', function(){
-        card.dataset.size = b.dataset.size;
-        sizeBtns.forEach(function(x){ x.classList.toggle('on', x === b); });
-        refresh();
-      });
-    });
-    addBtn.addEventListener('click', function(){
-      add(card.dataset.name, cardSize(card), cardPrice(card));
-      addBtn.textContent = 'تمت الإضافة ✓';
-      setTimeout(refresh, 900);
-    });
-    refresh();
+  branchSel.addEventListener('change', fillZones);
+  zoneSel.addEventListener('change', function(){
+    var f = fee();
+    feeNote.textContent = f === null ? 'اختار المنطقة عشان تتحسب قيمة التوصيل.' : 'قيمة التوصيل للمنطقة دي: ' + money(f);
+    render();
   });
-
   document.getElementById('send').addEventListener('click', send);
   [nm, ph1, ph2, addr].forEach(function(el){
     el.addEventListener('input', function(){ errEl.classList.remove('on'); });
   });
 
+  buildMenu();
+  fillBranches();
   render();
 })();
 </script>
