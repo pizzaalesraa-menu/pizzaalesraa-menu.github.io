@@ -338,6 +338,7 @@
   }
 
   function render(){
+    errEl.classList.remove('on');
     var count = 0, total = 0;
     cart.forEach(function(l){ count += l.qty; total += l.qty * l.price; });
 
@@ -434,6 +435,9 @@
   document.getElementById('closeCart').addEventListener('click', function(){ sheet.hidden = true; });
   document.getElementById('clear').addEventListener('click', function(){ cart = []; render(); });
   document.getElementById('send').addEventListener('click', send);
+  [ph1, ph2, addr].forEach(function(el){
+    el.addEventListener('input', function(){ errEl.classList.remove('on'); });
+  });
   sheet.addEventListener('click', function(e){ if(e.target === sheet){ sheet.hidden = true; } });
 
   document.querySelectorAll('nav.tabs a').forEach(function(a){
