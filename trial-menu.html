@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>منيو الإسراء — نسخة تجريبية</title>
+<style>
+  :root{
+    --cream:#FFF6E8; --red:#C1121F; --red-dark:#8F0D17; --ink:#1B1B1B; --muted:#6b625c;
+    --line:#eae2d6; --card:#fffdfa;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:var(--cream); color:var(--ink);
+    padding-bottom:96px;
+  }
+  .trial{
+    background:var(--ink); color:#fff; font-size:12px; text-align:center; padding:7px 12px; letter-spacing:.2px;
+  }
+  .trial b{color:#ffd9a8}
+  header.top{
+    background:var(--cream); padding:10px 16px 6px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  header.top img{width:118px; height:auto; display:block; mix-blend-mode:multiply}
+  header.top .call{
+    font-size:12px; color:var(--muted); text-align:left; line-height:1.5;
+  }
+  header.top .call b{display:block; color:var(--red); font-size:16px; letter-spacing:.5px}
+  nav.tabs{
+    position:sticky; top:0; z-index:20; background:var(--cream);
+    display:flex; gap:8px; overflow-x:auto; padding:8px 16px 10px; border-bottom:1px solid var(--line);
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none}
+  nav.tabs a{
+    flex:0 0 auto; text-decoration:none; color:var(--ink); background:#fff; border:1px solid var(--line);
+    padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600;
+  }
+  nav.tabs a.on{background:var(--red); border-color:var(--red); color:#fff}
+  main{padding:14px 16px 8px}
+  h2.sec{
+    font-size:15px; margin:18px 2px 10px; color:var(--red-dark); letter-spacing:.3px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  h2.sec small{font-size:11px; color:var(--muted); font-weight:400; letter-spacing:1px}
+  article.card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    margin-bottom:14px; box-shadow:0 2px 10px rgba(27,27,27,.05);
+  }
+  .ph{background:#fff; border-bottom:1px solid var(--line)}
+  .ph img{width:100%; aspect-ratio:3/2; object-fit:contain; display:block}
+  .body{padding:12px 14px 14px}
+  .body h3{margin:0 0 4px; font-size:17px}
+  .body p{margin:0 0 12px; font-size:13px; line-height:1.6; color:var(--muted)}
+  .sizes{display:flex; gap:8px; margin-bottom:10px}
+  .sizes button{
+    flex:1; font-family:inherit; cursor:pointer; background:#fff; border:1.5px solid var(--line); border-radius:12px;
+    padding:9px 6px; font-size:13px; color:var(--ink); display:flex; flex-direction:column; gap:2px; align-items:center;
+  }
+  .sizes button b{font-size:15px}
+  .sizes button.on{border-color:var(--red); background:#fff2f2; color:var(--red-dark)}
+  .add{
+    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--red);
+    border:0; border-radius:12px; padding:12px; cursor:pointer;
+  }
+  .add:active{background:var(--red-dark)}
+  .single-price{font-size:16px; font-weight:700; margin:0 0 10px}
+  .single-price span{font-size:12px; color:var(--muted); font-weight:400; margin-inline-start:4px}
+  footer{padding:6px 16px 18px; color:var(--muted); font-size:12px; line-height:1.8; text-align:center}
+  footer b{color:var(--red)}
+  .bar{
+    position:fixed; inset-inline:0; bottom:0; z-index:40; padding:10px 14px 14px;
+    background:linear-gradient(180deg,rgba(255,246,232,0) 0%,var(--cream) 40%);
+  }
+  .bar button{
+    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--ink);
+    border:0; border-radius:14px; padding:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+  }
+  .bar .n{background:var(--red); border-radius:999px; padding:2px 9px; font-size:13px}
+  .sheet{position:fixed; inset:0; z-index:60; background:rgba(20,14,12,.45); display:flex; align-items:flex-end}
+  .sheet[hidden]{display:none}
+  .sheet-in{
+    background:var(--card); width:100%; border-radius:20px 20px 0 0; padding:14px 16px 20px; max-height:82vh; overflow:auto;
+  }
+  .sheet-in header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+  .sheet-in header h3{margin:0; font-size:16px}
+  .sheet-in header button{
+    background:none; border:0; font-size:24px; line-height:1; color:var(--muted); cursor:pointer; padding:0 4px;
+  }
+  ul.lines{list-style:none; margin:0 0 12px; padding:0}
+  ul.lines li{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line)}
+  ul.lines .nm{flex:1; font-size:13.5px; line-height:1.5}
+  ul.lines .nm small{display:block; color:var(--muted); font-size:11.5px}
+  .qty{display:flex; align-items:center; gap:8px}
+  .qty button{
+    width:30px; height:30px; border-radius:9px; border:1px solid var(--line); background:#fff; font-size:16px;
+    font-family:inherit; cursor:pointer; color:var(--ink); line-height:1;
+  }
+  .qty span{min-width:14px; text-align:center; font-size:14px; font-weight:700}
+  .line-price{font-size:13.5px; font-weight:700; min-width:52px; text-align:left}
+  .total{display:flex; justify-content:space-between; align-items:baseline; font-size:14px; margin:4px 0 14px}
+  .total b{font-size:19px; color:var(--red-dark)}
+  .send{
+    display:block; text-align:center; text-decoration:none; background:#0F7B4A; color:#fff; font-weight:700;
+    border-radius:13px; padding:14px; font-size:15px;
+  }
+  .clear{
+    width:100%; margin-top:10px; background:none; border:0; color:var(--muted); font-family:inherit; font-size:13px;
+    text-decoration:underline; cursor:pointer; padding:8px;
+  }
+  .hint{font-size:11.5px; color:var(--muted); line-height:1.7; margin:10px 0 0; text-align:center}
+  .empty{color:var(--muted); font-size:13px; text-align:center; padding:18px 0}
+</style>
+</head>
+<body>
+
+<div class="trial">نسخة تجريبية · الأسعار زي المنيو الأصلي · <b>مش المنيو الرسمي</b></div>
+
+<header class="top">
+  <img src="logo-wide.png" alt="بيتزا الإسراء">
+  <div class="call">الخط الساخن<b>15410</b></div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <a href="#pizza" class="on">بيتزا دجاج</a>
+  <a href="#fries">بطاطس</a>
+</nav>
+
+<main>
+  <section id="pizza">
+    <h2 class="sec">بيتزا دجاج <small>CHICKEN</small></h2>
+
+    <article class="card" data-name="بيتزا دجاج" data-desc="قطع الدجاج الطازج مع الفلفل والزيتون" data-m="145" data-l="185" data-size="L">
+      <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D9%81%D8%B1%D8%A7%D8%AE.jpg" alt="بيتزا دجاج"></div>
+      <div class="body">
+        <h3>دجاج</h3>
+        <p>قطع الدجاج الطازج مع الفلفل والزيتون</p>
+        <div class="sizes">
+          <button type="button" data-size="M">وسط <b>145</b></button>
+          <button type="button" data-size="L" class="on">كبير <b>185</b></button>
+        </div>
+        <button type="button" class="add">أضف للسلة · 185 ج.م</button>
+      </div>
+    </article>
+
+    <article class="card" data-name="بيتزا تشيكن شيدر" data-desc="دجاج مع صوص الشيدر الطبيعي" data-m="155" data-l="200" data-size="L">
+      <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%AA%D8%B4%D9%8A%D9%83%D9%86-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بيتزا تشيكن شيدر"></div>
+      <div class="body">
+        <h3>تشيكن شيدر</h3>
+        <p>دجاج مع صوص الشيدر الطبيعي</p>
+        <div class="sizes">
+          <button type="button" data-size="M">وسط <b>155</b></button>
+          <button type="button" data-size="L" class="on">كبير <b>200</b></button>
+        </div>
+        <button type="button" class="add">أضف للسلة · 200 ج.م</button>
+      </div>
+    </article>
+  </section>
+
+  <section id="fries">
+    <h2 class="sec">بطاطس <small>FRIES</small></h2>
+
+    <article class="card" data-name="بطاطس تشيكن شيدر" data-desc="" data-single="85">
+      <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%B3%D8%AA%D8%B1%D8%A8%D8%B3-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بطاطس تشيكن شيدر"></div>
+      <div class="body">
+        <h3>تشيكن شيدر</h3>
+        <p class="single-price">85 ج.م</p>
+        <button type="button" class="add">أضف للسلة · 85 ج.م</button>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  الأسعار بالجنيه المصري · حشو الأطراف جبنة كيري فقط<br>
+  للطلب: واتساب المطعم أو الخط الساخن <b>15410</b>
+</footer>
+
+<div class="bar" id="bar" hidden>
+  <button type="button" id="openCart">
+    <span>عرض السلة <span class="n" id="barCount">0</span></span>
+    <span id="barTotal">0 ج.م</span>
+  </button>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-in">
+    <header><h3>السلة</h3><button type="button" id="closeCart" aria-label="قفل">×</button></header>
+    <ul class="lines" id="lines"></ul>
+    <div class="total"><span>الإجمالي</span><b><span id="total">0</span> ج.م</b></div>
+    <a class="send" id="wa" href="#">إرسال الطلب على واتساب</a>
+    <button type="button" class="clear" id="clear">تفريغ السلة</button>
+    <p class="hint">الطلب هيتفتح في واتساب على رقم المطعم، وإنت اللي بتضغط إرسال.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PHONE = "201063922247";
+  var cart = [];
+  var bar = document.getElementById('bar');
+  var sheet = document.getElementById('sheet');
+  var linesEl = document.getElementById('lines');
+  var totalEl = document.getElementById('total');
+  var barCount = document.getElementById('barCount');
+  var barTotal = document.getElementById('barTotal');
+  var wa = document.getElementById('wa');
+
+  function money(n){ return n + ' ج.م'; }
+
+  function priceOf(card){
+    if(card.dataset.single) return parseInt(card.dataset.single,10);
+    var size = card.dataset.size;
+    return parseInt(size === 'M' ? card.dataset.m : card.dataset.l,10);
+  }
+  function labelOf(card){
+    if(card.dataset.single) return '';
+    return card.dataset.size === 'M' ? 'وسط' : 'كبير';
+  }
+
+  document.querySelectorAll('article.card').forEach(function(card){
+    var addBtn = card.querySelector('.add');
+    var sizeBtns = card.querySelectorAll('.sizes button');
+    function refresh(){ addBtn.textContent = 'أضف للسلة · ' + money(priceOf(card)); }
+    sizeBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        card.dataset.size = b.dataset.size;
+        sizeBtns.forEach(function(x){ x.classList.toggle('on', x === b); });
+        refresh();
+      });
+    });
+    addBtn.addEventListener('click', function(){
+      var name = card.dataset.name;
+      var size = labelOf(card);
+      var price = priceOf(card);
+      var key = name + '|' + size;
+      var found = cart.filter(function(l){ return l.key === key; })[0];
+      if(found){ found.qty += 1; }
+      else { cart.push({key:key, name:name, size:size, price:price, qty:1}); }
+      render();
+      addBtn.textContent = 'تمت الإضافة ✓';
+      setTimeout(refresh, 900);
+    });
+    refresh();
+  });
+
+  function render(){
+    var count = 0, total = 0;
+    cart.forEach(function(l){ count += l.qty; total += l.qty * l.price; });
+    barCount.textContent = count;
+    barTotal.textContent = money(total);
+    totalEl.textContent = total;
+    bar.hidden = count === 0;
+    if(count === 0){ sheet.hidden = true; }
+
+    linesEl.innerHTML = '';
+    if(cart.length === 0){
+      var li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = 'السلة فاضية';
+      linesEl.appendChild(li);
+    }
+    cart.forEach(function(l, i){
+      var li = document.createElement('li');
+      var nm = document.createElement('div');
+      nm.className = 'nm';
+      nm.textContent = l.name;
+      if(l.size){ var s = document.createElement('small'); s.textContent = l.size; nm.appendChild(s); }
+      var qty = document.createElement('div');
+      qty.className = 'qty';
+      var minus = document.createElement('button'); minus.type='button'; minus.textContent = '−';
+      var num = document.createElement('span'); num.textContent = l.qty;
+      var plus = document.createElement('button'); plus.type='button'; plus.textContent = '+';
+      minus.addEventListener('click', function(){ l.qty -= 1; if(l.qty <= 0){ cart.splice(i,1); } render(); });
+      plus.addEventListener('click', function(){ l.qty += 1; render(); });
+      qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
+      var pr = document.createElement('div');
+      pr.className = 'line-price';
+      pr.textContent = money(l.qty * l.price);
+      li.appendChild(nm); li.appendChild(qty); li.appendChild(pr);
+      linesEl.appendChild(li);
+    });
+
+    var text = 'طلب جديد — منيو الإسراء\n';
+    cart.forEach(function(l){
+      text += '• ' + l.name + (l.size ? ' (' + l.size + ')' : '') + ' × ' + l.qty + ' = ' + (l.qty * l.price) + ' ج.م\n';
+    });
+    text += 'الإجمالي: ' + total + ' ج.م\n';
+    text += '(نسخة تجريبية — الطلب مش بيتسجل عند المطعم)';
+    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
+  }
+
+  document.getElementById('openCart').addEventListener('click', function(){ sheet.hidden = false; render(); });
+  document.getElementById('closeCart').addEventListener('click', function(){ sheet.hidden = true; });
+  document.getElementById('clear').addEventListener('click', function(){ cart = []; render(); });
+  sheet.addEventListener('click', function(e){ if(e.target === sheet){ sheet.hidden = true; } });
+
+  document.querySelectorAll('nav.tabs a').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.querySelectorAll('nav.tabs a').forEach(function(x){ x.classList.toggle('on', x === a); });
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
