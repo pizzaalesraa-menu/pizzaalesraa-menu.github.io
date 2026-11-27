@@ -42,7 +42,6 @@
   main{padding:14px 16px 8px}
   @media (min-width:760px){
     .trial, header.top, nav.tabs, main{max-width:720px; margin-left:auto; margin-right:auto}
-    .bar{max-width:720px; margin-left:auto; margin-right:auto}
     .sheet-in{max-width:720px; margin-left:auto; margin-right:auto}
   }
   h2.sec{
@@ -75,26 +74,50 @@
   .single-price span{font-size:12px; color:var(--muted); font-weight:400; margin-inline-start:4px}
   footer{padding:6px 16px 18px; color:var(--muted); font-size:12px; line-height:1.8; text-align:center}
   footer b{color:var(--red)}
-  .bar{
-    position:fixed; inset-inline:0; bottom:0; z-index:40; padding:10px 14px 14px;
-    background:linear-gradient(180deg,rgba(255,246,232,0) 0%,var(--cream) 40%);
+
+  /* floating cart icon */
+  .fab{
+    position:fixed; left:16px; bottom:18px; z-index:50; width:60px; height:60px; border-radius:50%;
+    background:var(--ink); border:0; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 22px rgba(27,27,27,.30); padding:0;
   }
-  .bar button{
-    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--ink);
-    border:0; border-radius:14px; padding:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+  .fab svg{width:27px; height:27px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .fab .badge{
+    position:absolute; top:-3px; right:-3px; min-width:23px; height:23px; border-radius:999px;
+    background:var(--red); color:#fff; font-size:12px; font-weight:700; display:none;
+    align-items:center; justify-content:center; padding:0 6px; border:2px solid var(--cream);
   }
-  .bar .n{background:var(--red); border-radius:999px; padding:2px 9px; font-size:13px}
+  .fab .badge.on{display:flex}
+
+  /* cart sheet */
   .sheet{position:fixed; inset:0; z-index:60; background:rgba(20,14,12,.45); display:flex; align-items:flex-end}
   .sheet[hidden]{display:none}
   .sheet-in{
-    background:var(--card); width:100%; border-radius:20px 20px 0 0; padding:14px 16px 20px; max-height:82vh; overflow:auto;
+    background:var(--card); width:100%; border-radius:20px 20px 0 0; padding:14px 16px 20px; max-height:88vh; overflow:auto;
   }
-  .sheet-in header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+  .sheet-in header{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px}
   .sheet-in header h3{margin:0; font-size:16px}
   .sheet-in header button{
     background:none; border:0; font-size:24px; line-height:1; color:var(--muted); cursor:pointer; padding:0 4px;
   }
-  ul.lines{list-style:none; margin:0 0 12px; padding:0}
+  .sec-t{font-size:11.5px; color:var(--muted); letter-spacing:.3px; margin:12px 2px 8px}
+  .menu-list{display:flex; flex-direction:column; gap:8px}
+  .mrow{display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:14px; padding:8px; background:#fff}
+  .mrow img{width:54px; height:54px; object-fit:cover; border-radius:10px; border:1px solid var(--line); background:#fff}
+  .mrow .mi{flex:1; min-width:0}
+  .mrow .mi b{display:block; font-size:13.5px}
+  .mrow .mi .sz{display:flex; gap:6px; margin-top:5px}
+  .mrow .mi .sz button{
+    font-family:inherit; font-size:11.5px; padding:4px 9px; border-radius:8px; border:1px solid var(--line);
+    background:#fff; color:var(--ink); cursor:pointer;
+  }
+  .mrow .mi .sz button.on{border-color:var(--red); background:#fff2f2; color:var(--red-dark)}
+  .mrow .mi .pr{font-size:12px; color:var(--muted); margin-top:5px}
+  .mrow .plus{
+    width:34px; height:34px; border-radius:10px; border:0; background:var(--red); color:#fff; font-size:20px;
+    line-height:1; cursor:pointer; font-family:inherit; flex:0 0 auto;
+  }
+  ul.lines{list-style:none; margin:0 0 10px; padding:0}
   ul.lines li{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line)}
   ul.lines .nm{flex:1; font-size:13.5px; line-height:1.5}
   ul.lines .nm small{display:block; color:var(--muted); font-size:11.5px}
@@ -105,18 +128,29 @@
   }
   .qty span{min-width:14px; text-align:center; font-size:14px; font-weight:700}
   .line-price{font-size:13.5px; font-weight:700; min-width:52px; text-align:left}
-  .total{display:flex; justify-content:space-between; align-items:baseline; font-size:14px; margin:4px 0 14px}
+  .empty{color:var(--muted); font-size:13px; text-align:center; padding:14px 0}
+  .total{display:flex; justify-content:space-between; align-items:baseline; font-size:14px; margin:6px 0 12px}
   .total b{font-size:19px; color:var(--red-dark)}
+  form.of{display:flex; flex-direction:column; gap:6px}
+  .of label{font-size:12px; color:var(--muted); margin:4px 2px 0}
+  .of input,.of textarea{
+    font-family:inherit; font-size:14px; padding:11px 12px; border:1.5px solid var(--line); border-radius:12px;
+    background:#fff; color:var(--ink); width:100%;
+  }
+  .of input:focus,.of textarea:focus{outline:0; border-color:var(--red)}
+  .of input[type=tel]{direction:ltr; text-align:right}
+  .of textarea{min-height:72px; resize:vertical; line-height:1.6}
+  .err{color:var(--red); font-size:12px; margin:2px 2px 0; display:none}
+  .err.on{display:block}
   .send{
-    display:block; text-align:center; text-decoration:none; background:#0F7B4A; color:#fff; font-weight:700;
-    border-radius:13px; padding:14px; font-size:15px;
+    display:block; width:100%; text-align:center; background:#0F7B4A; color:#fff; font-weight:700; border:0;
+    border-radius:13px; padding:14px; font-size:15px; font-family:inherit; cursor:pointer; margin-top:12px;
   }
   .clear{
-    width:100%; margin-top:10px; background:none; border:0; color:var(--muted); font-family:inherit; font-size:13px;
+    width:100%; margin-top:8px; background:none; border:0; color:var(--muted); font-family:inherit; font-size:13px;
     text-decoration:underline; cursor:pointer; padding:8px;
   }
-  .hint{font-size:11.5px; color:var(--muted); line-height:1.7; margin:10px 0 0; text-align:center}
-  .empty{color:var(--muted); font-size:13px; text-align:center; padding:18px 0}
+  .hint{font-size:11.5px; color:var(--muted); line-height:1.7; margin:8px 0 0; text-align:center}
 </style>
 </head>
 <body>
@@ -183,89 +217,140 @@
   للطلب: واتساب المطعم أو الخط الساخن <b>15410</b>
 </footer>
 
-<div class="bar" id="bar" hidden>
-  <button type="button" id="openCart">
-    <span>عرض السلة <span class="n" id="barCount">0</span></span>
-    <span id="barTotal">0 ج.م</span>
-  </button>
-</div>
+<button type="button" class="fab" id="fab" aria-label="السلة">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle><path d="M3 4h2.2l2.3 11h11.2l2-8H6.2"></path></svg>
+  <span class="badge" id="badge">0</span>
+</button>
 
 <div class="sheet" id="sheet" hidden>
   <div class="sheet-in">
     <header><h3>السلة</h3><button type="button" id="closeCart" aria-label="قفل">×</button></header>
+
+    <p class="sec-t">أضف من المنيو</p>
+    <div class="menu-list" id="menuList"></div>
+
+    <p class="sec-t">الطلب</p>
     <ul class="lines" id="lines"></ul>
     <div class="total"><span>الإجمالي</span><b><span id="total">0</span> ج.م</b></div>
-    <a class="send" id="wa" href="#">إرسال الطلب على واتساب</a>
+
+    <form class="of" id="orderForm" autocomplete="on" novalidate>
+      <label for="ph1">تليفون ١ (لازم)</label>
+      <input id="ph1" name="ph1" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
+      <label for="ph2">تليفون ٢ (اختياري)</label>
+      <input id="ph2" name="ph2" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
+      <label for="addr">العنوان بالتفصيل (لازم)</label>
+      <textarea id="addr" name="addr" placeholder="المدينة / المنطقة، الشارع، رقم العمارة، الدور، الشقة، وأقرب علامة" autocomplete="street-address"></textarea>
+      <p class="err" id="err"></p>
+    </form>
+
+    <button type="button" class="send" id="send">إرسال الطلب على واتساب</button>
     <button type="button" class="clear" id="clear">تفريغ السلة</button>
-    <p class="hint">الطلب هيتفتح في واتساب على رقم المطعم، وإنت اللي بتضغط إرسال.</p>
+    <p class="hint">الطلب هيتفتح في واتساب على رقم المطعم بالتفاصيل، وإنت اللي بتضغط إرسال.</p>
   </div>
 </div>
 
 <script>
 (function(){
   var PHONE = "201063922247";
+  var ITEMS = [
+    { name:"بيتزا دجاج", img:"https://pizzaalesraa.com/wp-content/uploads/2026/07/%D9%81%D8%B1%D8%A7%D8%AE.jpg",
+      sizes:{ "وسط":145, "كبير":185 }, pick:"كبير" },
+    { name:"بيتزا تشيكن شيدر", img:"https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%AA%D8%B4%D9%8A%D9%83%D9%86-%D8%B4%D9%8A%D8%AF%D8%B1.jpg",
+      sizes:{ "وسط":155, "كبير":200 }, pick:"كبير" },
+    { name:"بطاطس تشيكن شيدر", img:"https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%B3%D8%AA%D8%B1%D8%A8%D8%B3-%D8%B4%D9%8A%D8%AF%D8%B1.jpg",
+      sizes:{ "":85 }, pick:"" }
+  ];
+
   var cart = [];
-  var bar = document.getElementById('bar');
+  var fab = document.getElementById('fab');
+  var badge = document.getElementById('badge');
   var sheet = document.getElementById('sheet');
   var linesEl = document.getElementById('lines');
   var totalEl = document.getElementById('total');
-  var barCount = document.getElementById('barCount');
-  var barTotal = document.getElementById('barTotal');
-  var wa = document.getElementById('wa');
+  var menuList = document.getElementById('menuList');
+  var errEl = document.getElementById('err');
+  var ph1 = document.getElementById('ph1');
+  var ph2 = document.getElementById('ph2');
+  var addr = document.getElementById('addr');
 
   function money(n){ return n + ' ج.م'; }
+  function keyOf(it, size){ return it.name + '|' + size; }
+  function priceOf(it, size){ return it.sizes[size]; }
 
-  function priceOf(card){
-    if(card.dataset.single) return parseInt(card.dataset.single,10);
-    var size = card.dataset.size;
-    return parseInt(size === 'M' ? card.dataset.m : card.dataset.l,10);
-  }
-  function labelOf(card){
-    if(card.dataset.single) return '';
-    return card.dataset.size === 'M' ? 'وسط' : 'كبير';
+  function add(it, size){
+    var key = keyOf(it, size), price = priceOf(it, size);
+    var found = cart.filter(function(l){ return l.key === key; })[0];
+    if(found){ found.qty += 1; }
+    else { cart.push({ key:key, name:it.name, size:size, price:price, qty:1 }); }
+    render();
   }
 
-  document.querySelectorAll('article.card').forEach(function(card){
-    var addBtn = card.querySelector('.add');
-    var sizeBtns = card.querySelectorAll('.sizes button');
-    function refresh(){ addBtn.textContent = 'أضف للسلة · ' + money(priceOf(card)); }
-    sizeBtns.forEach(function(b){
-      b.addEventListener('click', function(){
-        card.dataset.size = b.dataset.size;
-        sizeBtns.forEach(function(x){ x.classList.toggle('on', x === b); });
-        refresh();
-      });
+  function buildMenu(){
+    ITEMS.forEach(function(it){
+      var row = document.createElement('div');
+      row.className = 'mrow';
+
+      var img = document.createElement('img');
+      img.src = it.img; img.alt = it.name; img.loading = 'lazy';
+      row.appendChild(img);
+
+      var mi = document.createElement('div');
+      mi.className = 'mi';
+      var b = document.createElement('b');
+      b.textContent = it.name;
+      mi.appendChild(b);
+
+      var sizeNames = Object.keys(it.sizes);
+      if(sizeNames.length > 1){
+        var sz = document.createElement('div');
+        sz.className = 'sz';
+        sizeNames.forEach(function(sn){
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = sn + ' · ' + it.sizes[sn];
+          btn.classList.toggle('on', sn === it.pick);
+          btn.addEventListener('click', function(){
+            it.pick = sn;
+            sz.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === btn); });
+            pr.textContent = money(it.sizes[sn]);
+          });
+          sz.appendChild(btn);
+        });
+        mi.appendChild(sz);
+      }
+
+      var pr = document.createElement('div');
+      pr.className = 'pr';
+      pr.textContent = money(it.sizes[it.pick]);
+      mi.appendChild(pr);
+      row.appendChild(mi);
+
+      var plus = document.createElement('button');
+      plus.type = 'button';
+      plus.className = 'plus';
+      plus.textContent = '+';
+      plus.setAttribute('aria-label', 'أضف ' + it.name);
+      plus.addEventListener('click', function(){ add(it, it.pick); });
+      row.appendChild(plus);
+
+      menuList.appendChild(row);
     });
-    addBtn.addEventListener('click', function(){
-      var name = card.dataset.name;
-      var size = labelOf(card);
-      var price = priceOf(card);
-      var key = name + '|' + size;
-      var found = cart.filter(function(l){ return l.key === key; })[0];
-      if(found){ found.qty += 1; }
-      else { cart.push({key:key, name:name, size:size, price:price, qty:1}); }
-      render();
-      addBtn.textContent = 'تمت الإضافة ✓';
-      setTimeout(refresh, 900);
-    });
-    refresh();
-  });
+  }
 
   function render(){
     var count = 0, total = 0;
     cart.forEach(function(l){ count += l.qty; total += l.qty * l.price; });
-    barCount.textContent = count;
-    barTotal.textContent = money(total);
+
+    badge.textContent = count;
+    badge.classList.toggle('on', count > 0);
     totalEl.textContent = total;
-    bar.hidden = count === 0;
-    if(count === 0){ sheet.hidden = true; }
 
     linesEl.innerHTML = '';
     if(cart.length === 0){
-      var li = document.createElement('li');
-      li.className = 'empty';
-      li.textContent = 'السلة فاضية';
-      linesEl.appendChild(li);
+      var li0 = document.createElement('li');
+      li0.className = 'empty';
+      li0.textContent = 'السلة فاضية — ضيف من المنيو فوق';
+      linesEl.appendChild(li0);
     }
     cart.forEach(function(l, i){
       var li = document.createElement('li');
@@ -277,29 +362,78 @@
       qty.className = 'qty';
       var minus = document.createElement('button'); minus.type='button'; minus.textContent = '−';
       var num = document.createElement('span'); num.textContent = l.qty;
-      var plus = document.createElement('button'); plus.type='button'; plus.textContent = '+';
+      var plusB = document.createElement('button'); plusB.type='button'; plusB.textContent = '+';
       minus.addEventListener('click', function(){ l.qty -= 1; if(l.qty <= 0){ cart.splice(i,1); } render(); });
-      plus.addEventListener('click', function(){ l.qty += 1; render(); });
-      qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
+      plusB.addEventListener('click', function(){ l.qty += 1; render(); });
+      qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plusB);
       var pr = document.createElement('div');
       pr.className = 'line-price';
       pr.textContent = money(l.qty * l.price);
       li.appendChild(nm); li.appendChild(qty); li.appendChild(pr);
       linesEl.appendChild(li);
     });
+  }
+
+  function fail(msg){
+    errEl.textContent = msg;
+    errEl.classList.add('on');
+  }
+
+  function send(){
+    errEl.classList.remove('on');
+    var total = 0;
+    cart.forEach(function(l){ total += l.qty * l.price; });
+
+    if(cart.length === 0){ fail('السلة فاضية، ضيف صنف الأول.'); return; }
+    var p1 = ph1.value.replace(/[^0-9]/g, '');
+    var p2 = ph2.value.replace(/[^0-9]/g, '');
+    if(p1.length < 10){ fail('اكتب رقم تليفون صح في خانة تليفون ١.'); ph1.focus(); return; }
+    if(p2.length > 0 && p2.length < 10){ fail('رقم التليفون التاني مش مظبوط.'); ph2.focus(); return; }
+    if(addr.value.trim().length < 8){ fail('اكتب العنوان بالتفصيل (شارع، عمارة، دور، شقة).'); addr.focus(); return; }
 
     var text = 'طلب جديد — منيو الإسراء\n';
     cart.forEach(function(l){
       text += '• ' + l.name + (l.size ? ' (' + l.size + ')' : '') + ' × ' + l.qty + ' = ' + (l.qty * l.price) + ' ج.م\n';
     });
-    text += 'الإجمالي: ' + total + ' ج.م\n';
+    text += 'الإجمالي: ' + total + ' ج.م\n\n';
+    text += 'تليفون ١: ' + p1 + '\n';
+    if(p2){ text += 'تليفون ٢: ' + p2 + '\n'; }
+    text += 'العنوان: ' + addr.value.trim() + '\n';
     text += '(نسخة تجريبية — الطلب مش بيتسجل عند المطعم)';
-    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
+
+    window.location.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
   }
 
-  document.getElementById('openCart').addEventListener('click', function(){ sheet.hidden = false; render(); });
+  document.querySelectorAll('article.card').forEach(function(card){
+    var addBtn = card.querySelector('.add');
+    var sizeBtns = card.querySelectorAll('.sizes button');
+    function price(){
+      if(card.dataset.single) return parseInt(card.dataset.single,10);
+      return parseInt(card.dataset.size === 'M' ? card.dataset.m : card.dataset.l,10);
+    }
+    function refresh(){ addBtn.textContent = 'أضف للسلة · ' + money(price()); }
+    sizeBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        card.dataset.size = b.dataset.size;
+        sizeBtns.forEach(function(x){ x.classList.toggle('on', x === b); });
+        refresh();
+      });
+    });
+    addBtn.addEventListener('click', function(){
+      var size = card.dataset.single ? '' : (card.dataset.size === 'M' ? 'وسط' : 'كبير');
+      var it = { name: card.dataset.name, sizes: {} };
+      it.sizes[size] = price();
+      add(it, size);
+      addBtn.textContent = 'تمت الإضافة ✓';
+      setTimeout(refresh, 900);
+    });
+    refresh();
+  });
+
+  fab.addEventListener('click', function(){ sheet.hidden = false; render(); });
   document.getElementById('closeCart').addEventListener('click', function(){ sheet.hidden = true; });
   document.getElementById('clear').addEventListener('click', function(){ cart = []; render(); });
+  document.getElementById('send').addEventListener('click', send);
   sheet.addEventListener('click', function(e){ if(e.target === sheet){ sheet.hidden = true; } });
 
   document.querySelectorAll('nav.tabs a').forEach(function(a){
@@ -308,6 +442,7 @@
     });
   });
 
+  buildMenu();
   render();
 })();
 </script>
