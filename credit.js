@@ -2,20 +2,20 @@
   if (document.getElementById('pmCredit')) return;
   var NAME = 'Eng. Nasser', PHONE = '01503127310', INTL = '201503127310';
   var css = [
-    '.pm-credit{margin:20px auto 70px;width:min(80%,300px);padding:17px 14px 15px;border-radius:14px;background:#0a0507;border:1px solid rgba(255,60,80,.28);box-shadow:0 12px 30px rgba(0,0,0,.5),inset 0 0 26px rgba(255,31,51,.07);text-align:center;font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:#fff;direction:ltr;box-sizing:border-box}',
-    '.pm-credit small{display:block;font-size:8px;letter-spacing:.32em;text-transform:uppercase;color:#8f7e82}',
-    '.pm-credit-name{margin:7px 0 2px;font-size:22px;font-weight:800;letter-spacing:.05em;color:#fff;text-shadow:0 0 2px #fff,0 0 8px #ff4d5e,0 0 16px #ff1f33,0 0 32px #ff1f33,0 0 58px #c00018;animation:pmNeon 3.6s linear infinite}',
+    '.pm-credit{margin:20px auto 70px;width:min(80%,300px);padding:17px 14px 15px;border-radius:14px;background:#FFF6E8;border:1px solid rgba(193,18,31,.25);box-shadow:0 6px 18px rgba(80,20,0,.12);text-align:center;font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:#1B1B1B;direction:ltr;box-sizing:border-box}',
+    '.pm-credit small{display:block;font-size:8px;letter-spacing:.32em;text-transform:uppercase;color:#7a6a60}',
+    '.pm-credit-name{margin:7px 0 2px;font-size:22px;font-weight:800;letter-spacing:.05em;color:#C1121F;text-shadow:none}',
     '@keyframes pmNeon{0%,100%{opacity:1}3%{opacity:.55}5%{opacity:1}42%{opacity:1}44%{opacity:.7}46%{opacity:1}}',
     '@media (prefers-reduced-motion:reduce){.pm-credit-name{animation:none}}',
-    '.pm-credit-line{width:52px;height:2px;margin:7px auto 2px;border-radius:2px;background:linear-gradient(90deg,transparent,#ff2f42,transparent);box-shadow:0 0 10px rgba(255,47,66,.8)}',
-    '.pm-credit-num{margin-top:6px;font-size:11px;letter-spacing:.3em;color:#d8c9cc}',
+    '.pm-credit-line{width:52px;height:2px;margin:7px auto 2px;border-radius:2px;background:linear-gradient(90deg,transparent,#C1121F,transparent)}',
+    '.pm-credit-num{margin-top:6px;font-size:11px;letter-spacing:.3em;color:#5a4a42}',
     '.pm-credit-btns{display:flex;gap:8px;justify-content:center;margin-top:10px}',
     '.pm-credit-btns a{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;font-weight:700;font-size:12px;letter-spacing:.04em;text-decoration:none;background:transparent;transition:transform .15s ease}',
     '.pm-credit-btns a:hover{transform:translateY(-1px)}',
-    '.pm-credit-btns a.call{color:#ff5c6c;border:1px solid rgba(255,60,80,.75);box-shadow:0 0 12px rgba(255,31,51,.35),inset 0 0 8px rgba(255,31,51,.12);text-shadow:0 0 6px rgba(255,60,80,.8)}',
-    '.pm-credit-btns a.wa{color:#4be38a;border:1px solid rgba(46,204,113,.65);box-shadow:0 0 12px rgba(46,204,113,.3),inset 0 0 8px rgba(46,204,113,.1);text-shadow:0 0 6px rgba(75,227,138,.8)}',
-    '.pm-credit-btns a.call svg{stroke:#ff5c6c;filter:drop-shadow(0 0 4px rgba(255,60,80,.8))}',
-    '.pm-credit-btns a.wa svg{stroke:#4be38a;filter:drop-shadow(0 0 4px rgba(75,227,138,.8))}',
+    '.pm-credit-btns a.call{color:#C1121F;border:1px solid #C1121F}',
+    '.pm-credit-btns a.wa{color:#0F7B4A;border:1px solid #0F7B4A}',
+    '.pm-credit-btns a.call svg{stroke:#C1121F}',
+    '.pm-credit-btns a.wa svg{stroke:#0F7B4A}',
     '.pm-credit-btns svg{width:13px;height:13px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
   ].join('\n');
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
