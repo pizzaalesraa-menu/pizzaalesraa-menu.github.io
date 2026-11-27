@@ -222,4 +222,31 @@ html.pm-hero-go .pm-hero::after{animation:pmHeroGlowIn 1.2s ease .25s forwards,p
 
 
 <script>(function(){var s=document.getElementById("pmSlider");if(!s)return;var slides=s.querySelectorAll(".pm-slide"),dots=document.getElementById("pmDots"),n=slides.length,cur=0,timer=null,i,d;var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;for(i=0;i<n;i++){d=document.createElement("i");if(i===0)d.className="on";(function(k,el){el.addEventListener("click",function(){go(k);restart()})})(i,d);dots.appendChild(d)}function go(k){slides[cur].classList.remove("on");dots.children[cur].classList.remove("on");cur=(k%n+n)%n;slides[cur].classList.add("on");dots.children[cur].classList.add("on")}function restart(){if(timer)clearInterval(timer);if(!reduced)timer=setInterval(function(){go(cur+1)},4000)}restart();var x0=null;s.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;if(timer){clearInterval(timer);timer=null}},{passive:true});s.addEventListener("touchend",function(e){if(x0!==null){var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>30){if(dx>0){go(cur-1)}else{go(cur+1)}}x0=null}restart()},{passive:true});})();</script>
-<style>.pm-order-fab{position:fixed;left:12px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:10;display:flex;align-items:center;gap:8px;background:#C1121F;color:#fff;text-decoration:none;font-family:'Segoe UI',Tahoma,Arial,sans-serif;font-weight:700;font-size:14px;padding:11px 16px;border-radius:999px;box-shadow:0 8px 20px rgba(193,18,31,.35)}.pm-order-fab svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</style><a class="pm-order-fab" href="trial-order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle><path d="M3 4h2.2l2.3 11h11.2l2-8H6.2"></path></svg><span>اطلب أونلاين</span></a></body></html>
+<style>
+.pm-branches-btn{position:fixed;left:12px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:10;display:flex;align-items:center;gap:8px;background:#C1121F;color:#fff;font-family:'Segoe UI',Tahoma,Arial,sans-serif;font-weight:700;font-size:14px;padding:11px 16px;border-radius:999px;box-shadow:0 8px 20px rgba(193,18,31,.35);border:0;cursor:pointer}
+.pm-branches-btn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pm-br-sheet{position:fixed;inset:0;z-index:70;background:rgba(20,14,12,.5);display:flex;align-items:flex-end}
+.pm-br-sheet[hidden]{display:none}
+.pm-br-in{background:#fffdfa;width:100%;max-height:86vh;overflow:auto;border-radius:20px 20px 0 0;padding:14px 16px 22px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;color:#1B1B1B}
+@media (min-width:760px){.pm-br-in{max-width:720px;margin:0 auto}}
+.pm-br-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.pm-br-head h3{margin:0;font-size:16px}
+.pm-br-head button{background:none;border:0;font-size:24px;line-height:1;color:#6b625c;cursor:pointer;padding:0 4px}
+.pm-br-hello{margin:2px 2px 12px;font-size:12.5px;color:#6b625c;line-height:1.7}
+.pm-br{display:block;border:1px solid #eae2d6;border-radius:14px;padding:11px 12px;margin-bottom:9px;text-decoration:none;color:#1B1B1B;background:#fff}
+.pm-br b{display:block;font-size:14.5px;margin-bottom:3px;color:#8F0D17}
+.pm-br span{display:block;font-size:12.5px;line-height:1.65;color:#4a4440}
+.pm-br em{display:inline-block;margin-top:7px;font-style:normal;font-size:12px;font-weight:700;color:#0F7B4A}
+</style>
+<button type="button" class="pm-branches-btn" id="pmBranchesBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"></path><circle cx="12" cy="10" r="2.6"></circle></svg><span>فروعنا</span></button>
+<div class="pm-br-sheet" id="pmBrSheet" hidden>
+  <div class="pm-br-in">
+    <div class="pm-br-head"><h3>عناوين الفروع</h3><button type="button" id="pmBrClose" aria-label="قفل">×</button></div>
+    <p class="pm-br-hello">أهلاً وسهلاً بحضرتك يافندم 💙 — للوصول إلينا من خلال GPS:</p>
+    <a class="pm-br" href="https://maps.app.goo.gl/nVXSjhBgGNLtvV8m9" target="_blank" rel="noopener"><b>فرع طنطا 📍</b><span>الإستاد شارع الحياة بجوار حديقة الطفل وجزارة هندي وأمام معرض أباظة للسيارات</span><em>افتح الموقع على الخريطة</em></a>
+    <a class="pm-br" href="https://maps.app.goo.gl/THs2fjnDKBFiU2YG8" target="_blank" rel="noopener"><b>فرع ميت غمر 📍</b><span>شارع بورسعيد أمام مطبعة السعادة</span><em>افتح الموقع على الخريطة</em></a>
+    <a class="pm-br" href="https://maps.app.goo.gl/mSYQ3pnscGAVcW159" target="_blank" rel="noopener"><b>فرع السنبلاوين 📍</b><span>شارع الزراعية بجوار ماك للسجاد</span><em>افتح الموقع على الخريطة</em></a>
+    <a class="pm-br" href="https://maps.app.goo.gl/XsWF3rUpLGX6ENLB6?g_st=aw" target="_blank" rel="noopener"><b>فرع المنصورة 📍</b><span>حى الجامعة - بجوار مول الجامعة</span><em>افتح الموقع على الخريطة</em></a>
+  </div>
+</div>
+<script>(function(){var b=document.getElementById('pmBranchesBtn'),s=document.getElementById('pmBrSheet'),c=document.getElementById('pmBrClose');if(!b||!s)return;b.addEventListener('click',function(){s.hidden=false});c.addEventListener('click',function(){s.hidden=true});s.addEventListener('click',function(e){if(e.target===s)s.hidden=true})})();</script></body></html>
