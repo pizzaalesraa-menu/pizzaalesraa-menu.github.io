@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>طلب أونلاين — منيو الإسراء (تجريبي)</title>
+<style>
+  :root{
+    --cream:#FFF6E8; --red:#C1121F; --red-dark:#8F0D17; --ink:#1B1B1B; --muted:#6b625c;
+    --line:#eae2d6; --card:#fffdfa; --green:#0F7B4A;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:var(--cream); color:var(--ink);
+    padding-bottom:110px;
+  }
+  header.top{
+    background:var(--cream); padding:10px 16px 6px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  header.top img{width:112px; height:auto; display:block; mix-blend-mode:multiply}
+  header.top .call{font-size:12px; color:var(--muted); text-align:left; line-height:1.5}
+  header.top .call b{display:block; color:var(--red); font-size:16px; letter-spacing:.5px}
+  .back{
+    display:flex; align-items:center; gap:6px; padding:6px 16px 10px; font-size:13px; color:var(--muted);
+    text-decoration:none; border-bottom:1px solid var(--line);
+  }
+  .back b{color:var(--red-dark); font-weight:700}
+  main{padding:12px 16px 8px}
+  @media (min-width:760px){
+    header.top, .back, main, footer, .bar{max-width:720px; margin-left:auto; margin-right:auto}
+  }
+  h2.sec{
+    font-size:15px; margin:16px 2px 10px; color:var(--red-dark); letter-spacing:.3px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  h2.sec small{font-size:11px; color:var(--muted); font-weight:400; letter-spacing:1px}
+  article.card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    margin-bottom:14px; box-shadow:0 2px 10px rgba(27,27,27,.05);
+  }
+  .ph{background:#fff; border-bottom:1px solid var(--line)}
+  .ph img{width:100%; aspect-ratio:3/2; object-fit:contain; display:block}
+  .body{padding:12px 14px 14px}
+  .body h3{margin:0 0 4px; font-size:17px}
+  .body p{margin:0 0 12px; font-size:13px; line-height:1.6; color:var(--muted)}
+  .sizes{display:flex; gap:8px; margin-bottom:10px}
+  .sizes button{
+    flex:1; font-family:inherit; cursor:pointer; background:#fff; border:1.5px solid var(--line); border-radius:12px;
+    padding:9px 6px; font-size:13px; color:var(--ink); display:flex; flex-direction:column; gap:2px; align-items:center;
+  }
+  .sizes button b{font-size:15px}
+  .sizes button.on{border-color:var(--red); background:#fff2f2; color:var(--red-dark)}
+  .add{
+    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--red);
+    border:0; border-radius:12px; padding:12px; cursor:pointer;
+  }
+  .add:active{background:var(--red-dark)}
+  .single-price{font-size:16px; font-weight:700; margin:0 0 10px}
+  .box{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:12px 14px; margin-bottom:14px}
+  ul.lines{list-style:none; margin:0; padding:0}
+  ul.lines li{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line)}
+  ul.lines li:last-child{border-bottom:0}
+  ul.lines .nm{flex:1; font-size:13.5px; line-height:1.5}
+  ul.lines .nm small{display:block; color:var(--muted); font-size:11.5px}
+  .qty{display:flex; align-items:center; gap:8px}
+  .qty button{
+    width:30px; height:30px; border-radius:9px; border:1px solid var(--line); background:#fff; font-size:16px;
+    font-family:inherit; cursor:pointer; color:var(--ink); line-height:1;
+  }
+  .qty span{min-width:14px; text-align:center; font-size:14px; font-weight:700}
+  .line-price{font-size:13.5px; font-weight:700; min-width:52px; text-align:left}
+  .empty{color:var(--muted); font-size:13px; text-align:center; padding:14px 0}
+  .total{display:flex; justify-content:space-between; align-items:baseline; font-size:14px; margin:10px 0 0; padding-top:10px; border-top:1px solid var(--line)}
+  .total b{font-size:19px; color:var(--red-dark)}
+  form.of{display:flex; flex-direction:column; gap:4px}
+  .of label{font-size:12px; color:var(--muted); margin:6px 2px 0}
+  .of input,.of textarea{
+    font-family:inherit; font-size:14px; padding:11px 12px; border:1.5px solid var(--line); border-radius:12px;
+    background:#fff; color:var(--ink); width:100%;
+  }
+  .of input:focus,.of textarea:focus{outline:0; border-color:var(--red)}
+  .of input[type=tel]{direction:ltr; text-align:right}
+  .of textarea{min-height:76px; resize:vertical; line-height:1.6}
+  .err{color:var(--red); font-size:12px; margin:4px 2px 0; display:none}
+  .err.on{display:block}
+  .bar{
+    position:fixed; inset-inline:0; bottom:0; z-index:40; padding:10px 14px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(255,246,232,0) 0%,var(--cream) 45%);
+  }
+  .bar button{
+    width:100%; font-family:inherit; font-size:15px; font-weight:700; color:#fff; background:var(--green);
+    border:0; border-radius:14px; padding:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+  }
+  .bar .t{background:rgba(255,255,255,.18); border-radius:10px; padding:3px 9px; font-size:13px}
+  footer{padding:4px 16px 18px; color:var(--muted); font-size:11.5px; line-height:1.8; text-align:center}
+  footer b{color:var(--red)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="logo-wide.png" alt="بيتزا الإسراء">
+  <div class="call">الخط الساخن<b>15410</b></div>
+</header>
+<a class="back" href="trial-menu.html">→ <span>رجوع للمنيو الأصلي</span></a>
+
+<main>
+  <h2 class="sec">١. اختار من المنيو <small>MENU</small></h2>
+
+  <article class="card" data-name="بيتزا دجاج" data-m="145" data-l="185" data-size="L">
+    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D9%81%D8%B1%D8%A7%D8%AE.jpg" alt="بيتزا دجاج"></div>
+    <div class="body">
+      <h3>بيتزا دجاج</h3>
+      <p>قطع الدجاج الطازج مع الفلفل والزيتون</p>
+      <div class="sizes">
+        <button type="button" data-size="M">وسط <b>145</b></button>
+        <button type="button" data-size="L" class="on">كبير <b>185</b></button>
+      </div>
+      <button type="button" class="add">أضف للسلة · 185 ج.م</button>
+    </div>
+  </article>
+
+  <article class="card" data-name="بيتزا تشيكن شيدر" data-m="155" data-l="200" data-size="L">
+    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%AA%D8%B4%D9%8A%D9%83%D9%86-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بيتزا تشيكن شيدر"></div>
+    <div class="body">
+      <h3>بيتزا تشيكن شيدر</h3>
+      <p>دجاج مع صوص الشيدر الطبيعي</p>
+      <div class="sizes">
+        <button type="button" data-size="M">وسط <b>155</b></button>
+        <button type="button" data-size="L" class="on">كبير <b>200</b></button>
+      </div>
+      <button type="button" class="add">أضف للسلة · 200 ج.م</button>
+    </div>
+  </article>
+
+  <article class="card" data-name="بطاطس تشيكن شيدر" data-single="85">
+    <div class="ph"><img src="https://pizzaalesraa.com/wp-content/uploads/2026/07/%D8%B3%D8%AA%D8%B1%D8%A8%D8%B3-%D8%B4%D9%8A%D8%AF%D8%B1.jpg" alt="بطاطس تشيكن شيدر"></div>
+    <div class="body">
+      <h3>بطاطس تشيكن شيدر</h3>
+      <p class="single-price">85 ج.م</p>
+      <button type="button" class="add">أضف للسلة · 85 ج.م</button>
+    </div>
+  </article>
+
+  <h2 class="sec">٢. السلة <small>CART</small></h2>
+  <div class="box">
+    <ul class="lines" id="lines"></ul>
+    <div class="total"><span>الإجمالي</span><b><span id="total">0</span> ج.م</b></div>
+  </div>
+
+  <h2 class="sec">٣. بيانات الطلب <small>YOUR DETAILS</small></h2>
+  <div class="box">
+    <form class="of" id="orderForm" novalidate>
+      <label for="nm">الاسم (لازم)</label>
+      <input id="nm" name="nm" type="text" placeholder="اسمك" autocomplete="name">
+      <label for="ph1">تليفون ١ (لازم)</label>
+      <input id="ph1" name="ph1" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
+      <label for="ph2">تليفون ٢ (اختياري)</label>
+      <input id="ph2" name="ph2" type="tel" inputmode="tel" placeholder="01xxxxxxxxx" autocomplete="tel">
+      <label for="addr">العنوان بالتفصيل (لازم)</label>
+      <textarea id="addr" name="addr" placeholder="المدينة / المنطقة، الشارع، رقم العمارة، الدور، الشقة، وأقرب علامة" autocomplete="street-address"></textarea>
+      <p class="err" id="err"></p>
+    </form>
+  </div>
+</main>
+
+<footer>
+  نسخة تجريبية · الطلب مش بيتسجل عند المطعم لحد ما يتم الاتفاق على التشغيل.<br>
+  الأسعار بالجنيه المصري زي المنيو الأصلي · للاستفسار: <b>15410</b>
+</footer>
+
+<div class="bar">
+  <button type="button" id="send">
+    <span>إرسال الطلب على واتساب</span>
+    <span class="t"><span id="barTotal">0</span> ج.م</span>
+  </button>
+</div>
+
+<script>
+(function(){
+  var PHONE = "201063922247";
+  var cart = [];
+  var linesEl = document.getElementById('lines');
+  var totalEl = document.getElementById('total');
+  var barTotal = document.getElementById('barTotal');
+  var errEl = document.getElementById('err');
+  var nm = document.getElementById('nm');
+  var ph1 = document.getElementById('ph1');
+  var ph2 = document.getElementById('ph2');
+  var addr = document.getElementById('addr');
+
+  function money(n){ return n + ' ج.م'; }
+
+  function cardPrice(card){
+    if(card.dataset.single) return parseInt(card.dataset.single,10);
+    return parseInt(card.dataset.size === 'M' ? card.dataset.m : card.dataset.l,10);
+  }
+  function cardSize(card){
+    if(card.dataset.single) return '';
+    return card.dataset.size === 'M' ? 'وسط' : 'كبير';
+  }
+
+  function add(name, size, price){
+    var key = name + '|' + size;
+    var found = cart.filter(function(l){ return l.key === key; })[0];
+    if(found){ found.qty += 1; }
+    else { cart.push({ key:key, name:name, size:size, price:price, qty:1 }); }
+    render();
+  }
+
+  function render(){
+    errEl.classList.remove('on');
+    var count = 0, total = 0;
+    cart.forEach(function(l){ count += l.qty; total += l.qty * l.price; });
+    totalEl.textContent = total;
+    barTotal.textContent = total;
+
+    linesEl.innerHTML = '';
+    if(cart.length === 0){
+      var li0 = document.createElement('li');
+      li0.className = 'empty';
+      li0.textContent = 'السلة فاضية — ضيف أصناف من فوق';
+      linesEl.appendChild(li0);
+      return;
+    }
+    cart.forEach(function(l, i){
+      var li = document.createElement('li');
+      var nmEl = document.createElement('div');
+      nmEl.className = 'nm';
+      nmEl.textContent = l.name;
+      if(l.size){ var s = document.createElement('small'); s.textContent = l.size; nmEl.appendChild(s); }
+      var qty = document.createElement('div');
+      qty.className = 'qty';
+      var minus = document.createElement('button'); minus.type='button'; minus.textContent = '−';
+      var num = document.createElement('span'); num.textContent = l.qty;
+      var plus = document.createElement('button'); plus.type='button'; plus.textContent = '+';
+      minus.addEventListener('click', function(){ l.qty -= 1; if(l.qty <= 0){ cart.splice(i,1); } render(); });
+      plus.addEventListener('click', function(){ l.qty += 1; render(); });
+      qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
+      var pr = document.createElement('div');
+      pr.className = 'line-price';
+      pr.textContent = money(l.qty * l.price);
+      li.appendChild(nmEl); li.appendChild(qty); li.appendChild(pr);
+      linesEl.appendChild(li);
+    });
+  }
+
+  function fail(msg, el){
+    errEl.textContent = msg;
+    errEl.classList.add('on');
+    if(el){ el.scrollIntoView({block:'center', behavior:'smooth'}); el.focus({preventScroll:true}); }
+  }
+
+  function send(){
+    errEl.classList.remove('on');
+    var total = 0;
+    cart.forEach(function(l){ total += l.qty * l.price; });
+    if(cart.length === 0){ fail('السلة فاضية، ضيف صنف الأول.', null); return; }
+    var name = nm.value.trim();
+    var p1 = ph1.value.replace(/[^0-9]/g, '');
+    var p2 = ph2.value.replace(/[^0-9]/g, '');
+    if(name.length < 2){ fail('اكتب اسمك في خانة الاسم.', nm); return; }
+    if(p1.length < 10){ fail('اكتب رقم تليفون صح في خانة تليفون ١.', ph1); return; }
+    if(p2.length > 0 && p2.length < 10){ fail('رقم التليفون التاني مش مظبوط.', ph2); return; }
+    if(addr.value.trim().length < 8){ fail('اكتب العنوان بالتفصيل (شارع، عمارة، دور، شقة).', addr); return; }
+
+    var text = 'طلب جديد — منيو الإسراء\n';
+    cart.forEach(function(l){
+      text += '• ' + l.name + (l.size ? ' (' + l.size + ')' : '') + ' × ' + l.qty + ' = ' + (l.qty * l.price) + ' ج.م\n';
+    });
+    text += 'الإجمالي: ' + total + ' ج.م\n\n';
+    text += 'الاسم: ' + name + '\n';
+    text += 'تليفون ١: ' + p1 + '\n';
+    if(p2){ text += 'تليفون ٢: ' + p2 + '\n'; }
+    text += 'العنوان: ' + addr.value.trim() + '\n';
+    text += '(نسخة تجريبية — الطلب مش بيتسجل عند المطعم)';
+
+    window.location.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
+  }
+
+  document.querySelectorAll('article.card').forEach(function(card){
+    var addBtn = card.querySelector('.add');
+    var sizeBtns = card.querySelectorAll('.sizes button');
+    function refresh(){ addBtn.textContent = 'أضف للسلة · ' + money(cardPrice(card)); }
+    sizeBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        card.dataset.size = b.dataset.size;
+        sizeBtns.forEach(function(x){ x.classList.toggle('on', x === b); });
+        refresh();
+      });
+    });
+    addBtn.addEventListener('click', function(){
+      add(card.dataset.name, cardSize(card), cardPrice(card));
+      addBtn.textContent = 'تمت الإضافة ✓';
+      setTimeout(refresh, 900);
+    });
+    refresh();
+  });
+
+  document.getElementById('send').addEventListener('click', send);
+  [nm, ph1, ph2, addr].forEach(function(el){
+    el.addEventListener('input', function(){ errEl.classList.remove('on'); });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
