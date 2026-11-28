@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pizzaalesraa-menu.github.io/sitemap.xml
