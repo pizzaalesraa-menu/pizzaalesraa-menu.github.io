@@ -79,6 +79,13 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 <input type="file" id="slideFile" accept="image/*" class="hidden">
 </details>
 
+<details class="card" id="branchesCard">
+<summary>الفروع (زرار اللوكيشن)</summary>
+<div class="hint">دي الفروع اللي بتظهر لما العميل يدوس زرار Location تحت. تقدر تضيف فرع جديد، تعدل الاسم أو العنوان أو لينك الخريطة، تمسح أو ترتب بالأسهم. لينك الخريطة بتجيبه من جوجل مابس: افتح مكان الفرع &larr; مشاركة &larr; نسخ اللينك.</div>
+<div id="branches" style="margin-top:10px"></div>
+<div style="margin-top:6px"><button class="red" id="addbranch" type="button">إضافة فرع جديد</button></div>
+</details>
+
 <details class="card"><summary>كلام عام في الصفحة (الملاحظات والزراير)</summary><div class="hint">أي كلمة في الصفحة غير الأقسام والأصناف بتتعدل من هنا.</div><div id="globals"></div></details>
 <details class="card">
 <summary>إضافة قسم جديد</summary>
@@ -114,7 +121,37 @@ const OWNER='pizzaalesraa-menu',REPO='pizzaalesraa-menu.github.io',PATH='index.h
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
 const $=id=>document.getElementById(id);
 let doc=null,sha=null,items=[],meta={},globals=[],orderDirty=false,secDirty=false;
+const BR_API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/branches.js';
+let branches=[],brSha=null,branchesOrig='[]';
 
+const escQ=s=>String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+const unescQ=s=>String(s).replace(/\\'/g,"'").replace(/\\\\/g,'\\');
+function parseBranches(js){const out=[];const re=/\{\s*name:\s*'((?:[^'\\]|\\.)*)',\s*addr:\s*'((?:[^'\\]|\\.)*)',\s*map:\s*'((?:[^'\\]|\\.)*)'\s*\}/g;let m;while((m=re.exec(js)))out.push({name:unescQ(m[1]),addr:unescQ(m[2]),map:unescQ(m[3])});return out}
+function genBranches(list){return list.map(b=>"    { name: '"+escQ(b.name)+"', addr: '"+escQ(b.addr)+"', map: '"+escQ(b.map)+"' }").join(',\n')}
+const brSig=()=>JSON.stringify(branches);
+const branchesDirty=()=>brSig()!==branchesOrig;
+async function loadBranches(){try{const r=await fetch(BR_API+'?ref='+BR+'&t='+Date.now(),{headers:hdr(),cache:'no-store'});if(!r.ok)return;const j=await r.json();brSha=j.sha;branches=parseBranches(b64dec(j.content));branchesOrig=brSig()}catch(e){}}
+function renderBranches(){
+  const w=$('branches');if(!w)return;w.innerHTML='';
+  branches.forEach((b,idx)=>{
+    const box=document.createElement('div');box.style.cssText='border:2px solid #eee;border-radius:14px;padding:10px;margin-bottom:10px;background:#fff';
+    const mk=(ph,val,dir,cb)=>{const i=document.createElement('input');i.type='text';i.value=val;i.placeholder=ph;if(dir)i.dir=dir;i.style.marginBottom='6px';i.addEventListener('input',()=>{cb(i.value);refreshBar()});return i};
+    box.appendChild(mk('اسم الفرع (مثال: فرع طنطا)',b.name,'',v=>{b.name=v}));
+    box.appendChild(mk('العنوان بالتفصيل',b.addr,'',v=>{b.addr=v}));
+    box.appendChild(mk('لينك جوجل مابس (https://...)',b.map,'ltr',v=>{b.map=v.trim()}));
+    const btns=document.createElement('div');btns.style.cssText='display:flex;gap:6px;align-items:center';
+    const up=document.createElement('button');up.type='button';up.className='ar';up.textContent='\u25B2';up.disabled=idx===0;
+    const dn=document.createElement('button');dn.type='button';dn.className='ar';dn.textContent='\u25BC';dn.disabled=idx===branches.length-1;
+    const del=document.createElement('button');del.type='button';del.textContent='\u0645\u0633\u062D \u0627\u0644\u0641\u0631\u0639';del.style.cssText='flex:1;min-height:44px';
+    up.onclick=()=>{if(idx>0){branches.splice(idx-1,0,branches.splice(idx,1)[0]);renderBranches();refreshBar()}};
+    dn.onclick=()=>{if(idx<branches.length-1){branches.splice(idx+1,0,branches.splice(idx,1)[0]);renderBranches();refreshBar()}};
+    del.onclick=()=>{if(confirm('\u062A\u0645\u0633\u062D \u0627\u0644\u0641\u0631\u0639 \u062F\u0647\u061F')){branches.splice(idx,1);renderBranches();refreshBar()}};
+    btns.appendChild(del);btns.appendChild(up);btns.appendChild(dn);
+    box.appendChild(btns);
+    w.appendChild(box);
+  });
+  if(!branches.length){const p=document.createElement('div');p.className='hint';p.textContent='\u0645\u0641\u064A\u0634 \u0641\u0631\u0648\u0639 \u0645\u062A\u0633\u062C\u0644\u0629. \u0636\u064A\u0641 \u0623\u0648\u0644 \u0641\u0631\u0639 \u0645\u0646 \u0627\u0644\u0632\u0631\u0627\u0631 \u062A\u062D\u062A.';w.appendChild(p)}
+}
 function msg(t,c){const m=$('msg');m.innerHTML='';if(!t)return;const d=document.createElement('div');d.className='msg '+(c||'ok');d.textContent=t;m.appendChild(d);window.scrollTo({top:0,behavior:'smooth'})}
 function hdr(){return{'Authorization':'Bearer '+localStorage.getItem('menuKey'),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
 function b64dec(s){const bin=atob(s.replace(/\n/g,''));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
@@ -162,13 +199,14 @@ async function load(){
   items.forEach(i=>i.orig=sig(i));
   setupGlobals();parseSlides();
   render();
+  await loadBranches();renderBranches();
   $('login').classList.add('hidden');$('app').classList.remove('hidden');$('bar').classList.remove('hidden');
 }
 const sig=i=>JSON.stringify([i.name,i.desc,i.m,i.l,i.s,i.isNew,i.sid]);
 const itemChanged=i=>i.removed||i.added||sig(i)!==i.orig;
 const secChanged=id=>meta[id]&&(meta[id].t!==meta[id].ot||meta[id].e!==meta[id].oe);
 const globalChanged=g=>g.val!==g.orig;
-function dirtyCount(){return items.filter(itemChanged).length+Object.keys(meta).filter(secChanged).length+globals.filter(globalChanged).length+(orderDirty?1:0)+(secDirty?1:0)+sliderDirtyCount()}
+function dirtyCount(){return items.filter(itemChanged).length+Object.keys(meta).filter(secChanged).length+globals.filter(globalChanged).length+(orderDirty?1:0)+(secDirty?1:0)+sliderDirtyCount()+(branchesDirty()?1:0)}
 function refreshBar(){const n=dirtyCount();$('save').textContent=n?'حفظ التعديلات ('+n+')':'حفظ التعديلات'}
 window.addEventListener('beforeunload',e=>{if(doc&&dirtyCount()){e.preventDefault();e.returnValue=''}});
 
@@ -500,6 +538,26 @@ $('save').addEventListener('click',async()=>{
     if(up.error){msg(up.error,'err');btn.disabled=false;refreshBar();return}
     btn.textContent='بيتحفظ...';
   }
+  if(branchesDirty()){
+    if(branches.length<1){msg('لازم يفضل فرع واحد على الأقل لزرار اللوكيشن.','err');btn.disabled=false;refreshBar();return}
+    for(const b of branches){if(!String(b.name).trim()||!String(b.map).trim()){msg('كمّل اسم الفرع ولينك الخريطة لكل فرع قبل الحفظ.','err');btn.disabled=false;refreshBar();return}}
+    btn.textContent='بيتحفظ اللوكيشن...';
+    try{
+      const r0=await fetch(BR_API+'?ref='+BR+'&t='+Date.now(),{headers:hdr(),cache:'no-store'});
+      if(!r0.ok){msg('مشكلة في تحميل ملف الفروع ('+r0.status+'). جرب تاني.','err');btn.disabled=false;refreshBar();return}
+      const j0=await r0.json();
+      const cur=b64dec(j0.content);
+      const re=/var BRANCHES = \[[\s\S]*?\];/;
+      if(!re.test(cur)){msg('شكل ملف الفروع اتغير. كلم إنستنكت يظبطه.','err');btn.disabled=false;refreshBar();return}
+      const next=cur.replace(re,'var BRANCHES = [\n'+genBranches(branches)+'\n  ];');
+      const r1=await fetch(BR_API,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr()),
+        body:JSON.stringify({message:'Branches update from editor',content:b64enc(next),sha:j0.sha,branch:BR})});
+      if(r1.status===409||r1.status===422){msg('ملف الفروع اتغير من مكان تاني. هحمل الصفحة من جديد، عدل تاني وادوس حفظ.','err');await load();btn.disabled=false;refreshBar();return}
+      if(!r1.ok){msg('حفظ الفروع فشل ('+r1.status+'). جرب تاني.','err');btn.disabled=false;refreshBar();return}
+      branchesOrig=brSig();
+    }catch(e){msg('مفيش نت أو حصل خطأ أثناء حفظ الفروع. جرب تاني.','err');btn.disabled=false;refreshBar();return}
+    btn.textContent='بيتحفظ...';
+  }
   try{
     const r=await fetch(API,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr()),
       body:JSON.stringify({message:'Menu update from editor',content:b64enc(out.html),sha,branch:BR})});
@@ -509,7 +567,8 @@ $('save').addEventListener('click',async()=>{
   }catch(e){msg('مفيش نت أو حصل خطأ. جرب تاني.','err')}
   finally{btn.disabled=false;refreshBar()}
 });
-$('reset').addEventListener('click',()=>{if(dirtyCount()&&confirm('تلغي كل التعديلات اللي لسه ما اتحفظتش؟'))load()});
+$('reset').addEventListener('click',()=>{if(dirtyCount()&&confirm('تلغي كل التعديلات اللي لسه ما اتحفظتش؟')){load();loadBranches().then(renderBranches)}});
+$('addbranch').addEventListener('click',()=>{branches.push({name:'فرع جديد \u{1F4CD}',addr:'',map:''});renderBranches();refreshBar()});
 
 function showLogin(){$('login').classList.remove('hidden');$('app').classList.add('hidden');$('bar').classList.add('hidden')}
 const LOCK={"i":600000,"s":"1jm9KYYs2duEWvsV+uHT4A==","n":"bdlgoaViKwi8AW4683V2rQ==","c":"IfGEj+mPnQXnDcZJKAmxUWof14peeQSHLE1y4T5lxxH8MfQTXlXOAcuVV2kD7fNWO0sEtbMI3qcv3tFF0V5HSy6NgZeMaLRMUs+Rayrv6D2EONMkh7w78yRxlZ4d","m":"ebcFBLUNMi1hrWNrODk7kOPJ5exJcq3W76uvXCW/YEE="};
