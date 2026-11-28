@@ -53,6 +53,9 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 .sl .btns button{min-height:38px;padding:6px 12px;font-size:14px;border-radius:10px}
 .sl .updn{display:flex;flex-direction:column;gap:4px}
 .sl .updn .ar{min-width:36px;min-height:30px;font-size:14px}
+.slwrap{margin-bottom:10px}
+.capin{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid #d9cdb8;border-radius:12px;background:#fff;color:#1B1B1B}
+.capin.changed{border-color:#0F7B4A;background:#f1fbf5}
 </style>
 </head>
 <body>
@@ -73,7 +76,7 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 <div id="list"></div>
 <details class="card" id="sliderCard" open>
 <summary>صور السلايدر (الصور المتحركة فوق المنيو)</summary>
-<div class="hint">دي الصور اللي بتلف فوق المنيو. دوس "تغيير" عشان تحط صورة من معرض موبايلك مكان أي صورة، أو "إضافة صور" عشان تضيف جديدة. تقدر تمسح أو ترتب بالأسهم. بعد ما تخلص دوس "حفظ التعديلات" تحت.</div>
+<div class="hint">دي الصور اللي بتلف فوق المنيو. دوس "تغيير" عشان تحط صورة من معرض موبايلك مكان أي صورة، أو "إضافة صور" عشان تضيف جديدة. تقدر تمسح أو ترتب بالأسهم. وتحت كل صورة خانة بتكتب فيها نص يظهر على الصورة نفسها (زي اسم عرض) — سيبها فاضية لو مش عايز نص. بعد ما تخلص دوس "حفظ التعديلات" تحت.</div>
 <div id="slides" style="margin-top:10px"></div>
 <div style="margin-top:6px"><button class="red" id="addslide" type="button">إضافة صور من الموبايل</button></div>
 <input type="file" id="slideFile" accept="image/*" class="hidden">
@@ -311,16 +314,20 @@ const MAXSLIDES=8;
 function parseSlides(){
   slides=Array.from(doc.querySelectorAll('.pm-slides .pm-slide')).map(el=>{
     const img=el.querySelector('img');
-    return {el,src:img?img.getAttribute('src'):'',alt:img?(img.getAttribute('alt')||''):'',file:null,preview:null,added:false,removed:false};
+    const capEl=el.querySelector('.pm-cap');
+    const cap=capEl?capEl.textContent:'';
+    return {el,src:img?img.getAttribute('src'):'',alt:img?(img.getAttribute('alt')||''):'',cap,capOrig:cap,file:null,preview:null,added:false,removed:false};
   });
   slideOrderDirty=false;fileTarget=-1;renderSlides();
 }
-function sliderDirtyCount(){return slides.filter(s=>s.removed||s.added||s.file).length+(slideOrderDirty?1:0)}
+const capChanged=s=>String(s.cap||'').trim()!==String(s.capOrig||'').trim();
+function sliderDirtyCount(){return slides.filter(s=>s.removed||s.added||s.file||capChanged(s)).length+(slideOrderDirty?1:0)}
 function renderSlides(){
   const box=$('slides');if(!box)return;box.innerHTML='';
   const act=slides.filter(s=>!s.removed);
   slides.forEach((s,i)=>{
-    const row=document.createElement('div');row.className='sl'+(s.removed?' removed':'')+((s.file||s.added)?' changed':'');
+    const wrap=document.createElement('div');wrap.className='slwrap';
+    const row=document.createElement('div');row.className='sl'+(s.removed?' removed':'')+((s.file||s.added||capChanged(s))?' changed':'');
     const th=document.createElement('img');th.className='th';th.alt='';
     th.src=s.preview||(s.src+(s.src&&s.src.indexOf('?')<0?'?v=2':''));
     row.appendChild(th);
@@ -346,7 +353,15 @@ function renderSlides(){
       if(s.added&&s.removed)slides.splice(slides.indexOf(s),1);
       renderSlides();refreshBar();
     });
-    bt.appendChild(del);row.appendChild(bt);box.appendChild(row);
+    bt.appendChild(del);row.appendChild(bt);wrap.appendChild(row);
+    if(!s.removed){
+      const ci=document.createElement('input');ci.type='text';ci.className='capin'+(capChanged(s)?' changed':'');ci.maxLength=70;
+      ci.placeholder='نص على الصورة (اختياري) - مثال: عرض اليوم';ci.value=s.cap||'';
+      ci.setAttribute('aria-label','النص على الصورة '+(i+1));
+      ci.addEventListener('input',()=>{s.cap=ci.value;const ch=capChanged(s);ci.classList.toggle('changed',ch);row.classList.toggle('changed',!!(s.file||s.added||ch));refreshBar()});
+      wrap.appendChild(ci);
+    }
+    box.appendChild(wrap);
   });
   if(!slides.length){const e=document.createElement('div');e.className='hint';e.textContent='مفيش صور. ضيف صورة من الزرار اللي تحت.';box.appendChild(e)}
 }
@@ -422,6 +437,9 @@ function applySlides(){
     img.setAttribute('src',s.file?s.file.name:s.src);
     img.setAttribute('alt',s.alt||'صورة من بيتزا الإسراء');
     el.className='pm-slide'+(idx===0?' on':'');
+    const capTxt=String(s.cap||'').trim(),oldCap=el.querySelector('.pm-cap');
+    if(capTxt){if(oldCap){oldCap.textContent=capTxt}else{const c=document.createElement('div');c.className='pm-cap';c.textContent=capTxt;el.appendChild(c)}}
+    else if(oldCap){oldCap.remove()}
     if(idx===0){img.setAttribute('fetchpriority','high');img.removeAttribute('loading')}
     else{img.setAttribute('loading','lazy');img.setAttribute('decoding','async');img.removeAttribute('fetchpriority')}
     cont.appendChild(el);
