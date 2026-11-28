@@ -244,7 +244,7 @@ tabs.forEach(function(a){
 });
 var links={};tabs.forEach(function(a){links[(a.getAttribute("href")||"").replace("#","")]=a});
 var current=null;
-function setOn(id){if(id===current)return;current=id;tabs.forEach(function(a){a.classList.remove("on")});var a=links[id];if(a){a.classList.add("on");a.scrollIntoView({block:"nearest",inline:"center"})}}
+function setOn(id){if(id===current)return;current=id;tabs.forEach(function(a){a.classList.remove("on")});var a=links[id];if(a){a.classList.add("on");var nav=a.parentElement;var target=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2;if(nav.scrollTo){nav.scrollTo({left:target,behavior:"smooth"})}else{nav.scrollLeft=target}}}
 if("IntersectionObserver" in window){
   var visible={};
   var io=new IntersectionObserver(function(es){es.forEach(function(e){visible[e.target.id]=e.isIntersecting?e.intersectionRatio:0});
