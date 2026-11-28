@@ -269,4 +269,28 @@ if("IntersectionObserver" in window){
 }
 tabs.forEach(function(a){a.addEventListener("click",function(){setOn((a.getAttribute("href")||"").replace("#",""))})});
 })()</script>
+<script>
+/* HOT badge: also applied at load, so any item that becomes spicy (or is re-saved
+   from the edit page) gets the badge, and no item keeps it after it stops matching. */
+(function(){
+  var KW=['\u062D\u0627\u0631','\u062A\u0634\u064A\u0644\u064A','\u0647\u0627\u0644\u0628\u064A\u0646\u0648','\u0647\u0627\u0644\u0627\u0628\u064A\u0646\u0648'];
+  var SKIP=['\u0635\u0648\u0635\u0627\u062A'];
+  var items=document.querySelectorAll('.pm-it');
+  for(var i=0;i<items.length;i++){
+    var it=items[i], b=it.querySelector('.pm-it-text b');
+    if(!b) continue;
+    var nm=b.textContent.replace('NEW','').trim();
+    var sp=it.querySelector('.pm-it-text span');
+    var blob=nm+' '+(sp?sp.textContent:'');
+    var hit=false;
+    for(var k=0;k<KW.length;k++){if(blob.indexOf(KW[k])>-1){hit=true;break}}
+    var badge=b.querySelector('.pm-hot');
+    if(hit&&SKIP.indexOf(nm)<0&&!badge){
+      var em=document.createElement('em');
+      em.className='pm-hot'; em.dir='ltr'; em.textContent='\uD83D\uDD25 HOT';
+      b.appendChild(em);
+    } else if(!hit&&badge){ badge.remove(); }
+  }
+})();
+</script>
 </body></html>
