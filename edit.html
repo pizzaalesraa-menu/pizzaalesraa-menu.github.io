@@ -56,6 +56,10 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 .slwrap{margin-bottom:10px}
 .capin{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid #d9cdb8;border-radius:12px;background:#fff;color:#1B1B1B}
 .capin.changed{border-color:#0F7B4A;background:#f1fbf5}
+.cappos{display:flex;align-items:center;gap:8px;margin-top:6px}
+.cappos-l{font-size:13px;font-weight:700;color:#5a4632;flex:0 0 auto}
+.cappos-s{flex:1;font:inherit;font-size:14px;padding:8px 10px;border:1px solid #d9cdb8;border-radius:10px;background:#fff;color:#1B1B1B}
+.cappos-s.changed{border-color:#0F7B4A;background:#f1fbf5}
 </style>
 </head>
 <body>
@@ -76,7 +80,7 @@ details.card>summary{font-weight:800;font-size:16px;cursor:pointer;min-height:28
 <div id="list"></div>
 <details class="card" id="sliderCard" open>
 <summary>صور السلايدر (الصور المتحركة فوق المنيو)</summary>
-<div class="hint">دي الصور اللي بتلف فوق المنيو. دوس "تغيير" عشان تحط صورة من معرض موبايلك مكان أي صورة، أو "إضافة صور" عشان تضيف جديدة. تقدر تمسح أو ترتب بالأسهم. وتحت كل صورة خانة بتكتب فيها نص يظهر على الصورة نفسها (زي اسم عرض) — سيبها فاضية لو مش عايز نص. بعد ما تخلص دوس "حفظ التعديلات" تحت.</div>
+<div class="hint">دي الصور اللي بتلف فوق المنيو. دوس "تغيير" عشان تحط صورة من معرض موبايلك مكان أي صورة، أو "إضافة صور" عشان تضيف جديدة. تقدر تمسح أو ترتب بالأسهم. وتحت كل صورة خانة بتكتب فيها نص يظهر على الصورة نفسها (زي اسم عرض) — سيبها فاضية لو مش عايز نص. وتقدر تختار مكان النص: تحت أو في النص أو فوق. بعد ما تخلص دوس "حفظ التعديلات" تحت.</div>
 <div id="slides" style="margin-top:10px"></div>
 <div style="margin-top:6px"><button class="red" id="addslide" type="button">إضافة صور من الموبايل</button></div>
 <input type="file" id="slideFile" accept="image/*" class="hidden">
@@ -316,18 +320,20 @@ function parseSlides(){
     const img=el.querySelector('img');
     const capEl=el.querySelector('.pm-cap');
     const cap=capEl?capEl.textContent:'';
-    return {el,src:img?img.getAttribute('src'):'',alt:img?(img.getAttribute('alt')||''):'',cap,capOrig:cap,file:null,preview:null,added:false,removed:false};
+    const pos=el.getAttribute('data-cap-pos')||'bot';
+    return {el,src:img?img.getAttribute('src'):'',alt:img?(img.getAttribute('alt')||''):'',cap,capOrig:cap,pos,posOrig:pos,file:null,preview:null,added:false,removed:false};
   });
   slideOrderDirty=false;fileTarget=-1;renderSlides();
 }
 const capChanged=s=>String(s.cap||'').trim()!==String(s.capOrig||'').trim();
-function sliderDirtyCount(){return slides.filter(s=>s.removed||s.added||s.file||capChanged(s)).length+(slideOrderDirty?1:0)}
+const posChanged=s=>(s.pos||'bot')!==(s.posOrig||'bot');
+function sliderDirtyCount(){return slides.filter(s=>s.removed||s.added||s.file||capChanged(s)||posChanged(s)).length+(slideOrderDirty?1:0)}
 function renderSlides(){
   const box=$('slides');if(!box)return;box.innerHTML='';
   const act=slides.filter(s=>!s.removed);
   slides.forEach((s,i)=>{
     const wrap=document.createElement('div');wrap.className='slwrap';
-    const row=document.createElement('div');row.className='sl'+(s.removed?' removed':'')+((s.file||s.added||capChanged(s))?' changed':'');
+    const row=document.createElement('div');row.className='sl'+(s.removed?' removed':'')+((s.file||s.added||capChanged(s)||posChanged(s))?' changed':'');
     const th=document.createElement('img');th.className='th';th.alt='';
     th.src=s.preview||(s.src+(s.src&&s.src.indexOf('?')<0?'?v=2':''));
     row.appendChild(th);
@@ -358,8 +364,16 @@ function renderSlides(){
       const ci=document.createElement('input');ci.type='text';ci.className='capin'+(capChanged(s)?' changed':'');ci.maxLength=70;
       ci.placeholder='نص على الصورة (اختياري) - مثال: عرض اليوم';ci.value=s.cap||'';
       ci.setAttribute('aria-label','النص على الصورة '+(i+1));
-      ci.addEventListener('input',()=>{s.cap=ci.value;const ch=capChanged(s);ci.classList.toggle('changed',ch);row.classList.toggle('changed',!!(s.file||s.added||ch));refreshBar()});
+      ci.addEventListener('input',()=>{s.cap=ci.value;const ch=capChanged(s);ci.classList.toggle('changed',ch);row.classList.toggle('changed',!!(s.file||s.added||ch||posChanged(s)));refreshBar()});
       wrap.appendChild(ci);
+      const pl=document.createElement('div');pl.className='cappos';
+      const plab=document.createElement('span');plab.className='cappos-l';plab.textContent='مكان النص';pl.appendChild(plab);
+      const ps=document.createElement('select');ps.className='cappos-s'+(posChanged(s)?' changed':'');
+      ps.setAttribute('aria-label','مكان النص على الصورة '+(i+1));
+      [['bot','تحت'],['mid','في النص'],['top','فوق']].forEach(function(vt){const o=document.createElement('option');o.value=vt[0];o.textContent=vt[1];ps.appendChild(o)});
+      ps.value=s.pos||'bot';
+      ps.addEventListener('change',()=>{s.pos=ps.value;const ch2=posChanged(s);ps.classList.toggle('changed',ch2);row.classList.toggle('changed',!!(s.file||s.added||ch2||capChanged(s)));refreshBar()});
+      pl.appendChild(ps);wrap.appendChild(pl);
     }
     box.appendChild(wrap);
   });
@@ -419,7 +433,7 @@ $('slideFile').addEventListener('change',async e=>{
       slides[fileTarget].file={name,data:p.data};
       slides[fileTarget].preview=p.data;
     }else{
-      slides.push({el:null,src:null,alt:'صورة من بيتزا الإسراء',file:{name,data:p.data},preview:p.data,added:true,removed:false});
+      slides.push({el:null,src:null,alt:'صورة من بيتزا الإسراء',cap:'',capOrig:'',pos:'bot',posOrig:'bot',file:{name,data:p.data},preview:p.data,added:true,removed:false});
     }
     await new Promise(r=>setTimeout(r,30));
   }
@@ -437,6 +451,7 @@ function applySlides(){
     img.setAttribute('src',s.file?s.file.name:s.src);
     img.setAttribute('alt',s.alt||'صورة من بيتزا الإسراء');
     el.className='pm-slide'+(idx===0?' on':'');
+    if((s.pos||'bot')==='bot'){el.removeAttribute('data-cap-pos')}else{el.setAttribute('data-cap-pos',s.pos)}
     const capTxt=String(s.cap||'').trim(),oldCap=el.querySelector('.pm-cap');
     if(capTxt){if(oldCap){oldCap.textContent=capTxt}else{const c=document.createElement('div');c.className='pm-cap';c.textContent=capTxt;el.appendChild(c)}}
     else if(oldCap){oldCap.remove()}
