@@ -253,7 +253,7 @@ tabs.forEach(function(a){
   if(grid&&sec){
     var c=document.createElement("a");c.className="pm-card";c.href="#"+id;
     var n=sec.querySelectorAll(".pm-it").length;
-    c.innerHTML='<span class="pm-ico">'+ico+'</span><span class="pm-name">'+a.textContent.trim()+'</span>'+(n?'<span class="pm-count">'+n+' صنف</span>':'');
+    c.innerHTML='<span class="pm-ico">'+ico+'</span><span class="pm-name">'+name+'</span>'+(n?'<span class="pm-count">'+n+' صنف</span>':'');
     grid.appendChild(c);
   }
 });
